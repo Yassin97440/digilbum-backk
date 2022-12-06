@@ -3,7 +3,7 @@ package com.digilbum.app.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "picture")
+@Table(name = "Picture")
 public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
