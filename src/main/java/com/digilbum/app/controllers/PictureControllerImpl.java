@@ -6,13 +6,14 @@ import com.digilbum.app.models.Picture;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PictureControllerImpl implements IPictureController{
 
-    private final String folderPath = "C:\\Users\\yassi\\Desktop\\album digital";
+    private final String folderPath = "C:/Users/yassi/Desktop/album digital/";
     @Override
     public Picture saveNewPictureFile(File file) {
         return null;
@@ -47,6 +48,20 @@ public class PictureControllerImpl implements IPictureController{
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+
+    @Override
+    public FileInputStream getPictureFromDisk(String pathFile) {
+        FileInputStream picture;
+        try {
+//            BufferedImage image = ImageIO.read(new File(folderPath + pathFile));
+            picture = new FileInputStream(folderPath + pathFile);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return picture;
     }
 
     @Override
