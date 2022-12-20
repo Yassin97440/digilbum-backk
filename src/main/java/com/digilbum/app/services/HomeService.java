@@ -1,7 +1,6 @@
 package com.digilbum.app.services;
 
 import com.digilbum.app.models.Album;
-import com.digilbum.app.models.User;
 import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.repositorys.PictureRepository;
 import com.digilbum.app.repositorys.UserRepository;
