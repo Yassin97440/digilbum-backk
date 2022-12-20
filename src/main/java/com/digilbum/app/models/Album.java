@@ -11,20 +11,20 @@ import java.util.Set;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "albumId", nullable = false)
+    @Column(name = "AlbumId", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 50)
+    @Column(name = "Name", nullable = false, length = 50)
     private String name;
 
-    @Column(name = "startDate", nullable = false)
+    @Column(name = "StartDate", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "EndDate", nullable = false)
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "userId", nullable = true)
+    @JoinColumn(name = "UserId", nullable = true)
     private User user;
 
     @OneToMany(mappedBy = "album")

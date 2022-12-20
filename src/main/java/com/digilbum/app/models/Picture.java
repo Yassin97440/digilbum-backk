@@ -7,14 +7,14 @@ import jakarta.persistence.*;
 public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "pictureId", nullable = false)
+    @Column(name = "PictureId", nullable = false)
     private Integer id;
 
-    @Column(name = "pathFile", nullable = false)
+    @Column(name = "PathFile", nullable = false)
     private String pathFile;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "albumId", nullable = false)
+    @JoinColumn(name = "AlbumId", nullable = false)
     private Album album;
 
     public Integer getId() {
