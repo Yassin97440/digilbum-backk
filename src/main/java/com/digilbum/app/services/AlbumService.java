@@ -43,16 +43,24 @@ public class AlbumService {
         albumRepository.save(album);
     }
 
+    /**
+     * @return
+     */
     @GetMapping("/getpicTest")
     public @ResponseBody ResponseEntity<byte[]> getThePictureTest( ) {
         InputStream in = getClass()
-                .getResourceAsStream("src/main/java/com/digilbum/app/services/logochien.png");
+                .getResourceAsStream("C:\\Users\\yassin.abdulla\\Pictures\\bgpng.png");
         System.out.println("inputStream"+in);
-        var imgFile = new ClassPathResource("C:\\1.png");
+        var imgFile = new ClassPathResource("C:\\Users\\yassin.abdulla\\Pictures\\bgpng");
+        // try {
+        //     System.out.println("imgFIles with classpatchrsrc : "+imgFile.getInputStream());
+        // } catch (IOException e) {
+        //     e.printStackTrace();
+        // }
         byte[] bytes;
         try {
             bytes = StreamUtils.copyToByteArray(in);
-            System.out.println(bytes.toString());
+            // System.out.println(bytes.toString());
 //            bytes = IOUtils.toByteArray(in);
         } catch (IOException e) {
             throw new RuntimeException(e);
