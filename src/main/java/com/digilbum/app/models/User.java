@@ -3,33 +3,31 @@ package com.digilbum.app.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userId", nullable = false)
+    @Column(name = "UserId", nullable = false)
     private Integer id;
 
-    @Column(name = "email", nullable = false, length = 150)
+    @Column(name = "Email", nullable = false, length = 150)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "Password", nullable = false)
     private String password;
 
-    @Column(name = "firstName", nullable = false, length = 50)
+    @Column(name = "FirstName", nullable = false, length = 50)
     private String firstName;
 
-    @Column(name = "lastName", nullable = false, length = 50)
+    @Column(name = "LastName", nullable = false, length = 50)
     private String lastName;
 
-    @Column(name = "createdDate", nullable = false)
+    @Column(name = "CreatedDate", nullable = false)
     private LocalDate createdDate;
 
-    @Column(name = "modifiedDate", nullable = false)
+    @Column(name = "ModifiedDate", nullable = false)
     private LocalDate modifiedDate;
 
     public Integer getId() {
