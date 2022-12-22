@@ -1,71 +1,51 @@
 package com.digilbum.app.controllers;
 
-import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
+import com.digilbum.app.repositorys.PictureRepository;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
-public class PictureControllerImpl implements IPictureController{
+public class PictureControllerImpl implements IPictureController {
 
-    private final String folderPath = "C:/Users/yassi/Desktop/album digital/";
+    private final String folderPath = "file:///C:/Users/yassi/Pictures/digilbum";
+
+    @Autowired
+    PictureRepository pictureRepository;
+
+    /*
+     * pour save un fichier, il faut construire le path du fichier
+     * quand on recoit une picture volatile, le pathFile contient le nom du fichier
+     * pour construire cet url on va utiliser le nom de l'album :
+     * PATH/images/album/pictureName
+     * puis plus tard :
+     * PATH/pictures/familly/event/album/pictureName
+     */
     @Override
-    public Picture saveNewPictureFile(File file) {
-        return null;
-    }
+    public List<Picture> saveNewPictures(List<Picture> pictures) {
 
-    @Override
-    public File getPictureFile(Picture picture) {
-        return null;
-    }
-
-    @Override
-    public List<Picture> saveNewPicturesFiles(Album album, List<File> files) {
-        List<Picture> pictures= new ArrayList<>();
-        for (File file:files) {
-            File bi = new File("folderPath"+"/"+album.getName()+"/"+file.getName());
-//        ImageIO.write()
-
+        for (Picture picture : pictures) {
+            generatePicturePathFile(picture);
         }
-        return null;
+
+        return (List<Picture>) pictureRepository.saveAll(pictures);
+    }
+
+    public Picture savePicture(Picture picture) {
+        generatePicturePathFile(picture);
+
+        return pictureRepository.save(picture);
+
+    }
+
+    private void generatePicturePathFile(Picture picture) {
+        String path = folderPath + picture.getAlbum().getName() + "/" + picture.getPathFile();
+        picture.setPathFile(path);
     }
 
     @Override
-    public List<File> getPictureFiles(List<Picture> pictures) {
-        List<File> pictureFiles= new ArrayList<>();
-        try {
-            for (Picture pic: pictures) {
-                BufferedImage image = ImageIO.read(new File(folderPath+pic.getPathFile()));
-
-//                pictureFiles.add(image);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-
-    @Override
-    public FileInputStream getPictureFromDisk(String pathFile) {
-        FileInputStream picture;
-        try {
-//            BufferedImage image = ImageIO.read(new File(folderPath + pathFile));
-            picture = new FileInputStream(folderPath + pathFile);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return picture;
-    }
-
-    @Override
-    public boolean deletePictureFile(Picture picture) {
-        return false;
+    public void deletePictureFile(Picture picture) {
+        pictureRepository.delete(picture);
     }
 }

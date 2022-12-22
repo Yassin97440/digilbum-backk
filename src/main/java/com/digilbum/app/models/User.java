@@ -3,8 +3,6 @@ package com.digilbum.app.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "User")
