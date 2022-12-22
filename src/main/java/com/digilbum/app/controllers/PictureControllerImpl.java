@@ -4,9 +4,11 @@ import com.digilbum.app.models.Picture;
 import com.digilbum.app.repositorys.PictureRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
+@Controller
 public class PictureControllerImpl implements IPictureController {
 
     private final String folderPath = "file:///C:/Users/yassi/Pictures/digilbum";
