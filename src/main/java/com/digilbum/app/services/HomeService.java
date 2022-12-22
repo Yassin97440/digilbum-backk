@@ -5,12 +5,10 @@ import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.repositorys.PictureRepository;
 import com.digilbum.app.repositorys.UserRepository;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
