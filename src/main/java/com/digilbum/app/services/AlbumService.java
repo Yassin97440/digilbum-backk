@@ -19,11 +19,13 @@ public class AlbumService {
     UserRepository userRepository;
 
     @PostMapping("/new")
-    public void addNewAlbum(@RequestBody Album album) {
+    public Album addNewAlbum(@RequestBody Album album) {
         System.out.println(album.getName());
         System.out.println(album);
         Optional<User> user = userRepository.findById(1);
         album.setUser(user.get());
-        albumRepository.save(album);
+        album = albumRepository.save(album);
+        System.out.println("cabo");
+        return album;
     }
 }
