@@ -1,8 +1,5 @@
 package com.digilbum.app.services;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +21,7 @@ import com.digilbum.app.repositorys.PictureRepository;
 @RequestMapping("/pictures")
 public class PictureService {
 
-    final String BASE_PATH = "C:\\Users\\yassi\\Desktop\\albumdigital";
+    public final String BASE_PATH = "file:///C:/Users/yassi/";
 
     @Autowired
     IPictureController pictureController;
@@ -43,26 +40,10 @@ public class PictureService {
         return null;
     }
 
-    @PostMapping(path = "/p", consumes = "multipart/form-data")
-    public void postMethodMultidata(@RequestPart List<MultipartFile> pictures, Album album) {
+    @PostMapping(path = "/writeAndSavePictures", consumes = "multipart/form-data")
+    public void writeAndSavePictures(@RequestPart List<MultipartFile> pictures, Album album) {
         System.out.println("call postMethodMultidata");
-        List<Picture> newPictures = new ArrayList<>();
-        int i = 0;
-        try {
-            for (MultipartFile pic : pictures) {
-                String fileName = "" + i++ + ".jpg";
-                Path path = Paths.get(BASE_PATH, "/", fileName);
-                pic.transferTo(path);
-                System.out.println(path);
-                Picture newPic = new Picture();
-                newPic.setAlbum(album);
-                newPic.setPathFile(BASE_PATH + "/" + fileName);
-                // newPictures.add(newPic);
-            }
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        pictureController.writeAndSavePictures(pictures, album);
         // album.setPictures((Set<Picture>) newPictures);
         System.out.println("on save les pics");
         // pictureRepository.saveAll(newPictures);

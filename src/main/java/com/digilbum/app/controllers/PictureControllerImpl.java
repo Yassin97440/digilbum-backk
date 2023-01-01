@@ -1,17 +1,26 @@
 package com.digilbum.app.controllers;
 
+import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.repositorys.PictureRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class PictureControllerImpl implements IPictureController {
 
-    private final String folderPath = "file:///C:/Users/yassi/Pictures/digilbum";
+    Logger logger = LoggerFactory.getLogger(getClass());
+
+    private final String folderPath = "Pictures/digilbum";
 
     @Autowired
     PictureRepository pictureRepository;
@@ -49,5 +58,29 @@ public class PictureControllerImpl implements IPictureController {
     @Override
     public void deletePictureFile(Picture picture) {
         pictureRepository.delete(picture);
+    }
+
+    @Override
+    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album) {
+        List<Picture> newPictures = new ArrayList<>();
+        int i = 0;
+        try {
+            for (MultipartFile pic : pictures) {
+                String fileName = i++ + ".jpg";
+                Path path = Paths.get(folderPath, "/", fileName);
+                pic.transferTo(path);
+                System.out.println(path);
+                Picture newPic = new Picture();
+                newPic.setAlbum(album);
+                newPic.setPathFile(folderPath + "/" + fileName);
+                newPictures.add(newPic);
+                pictureRepository.save(newPic);
+                return newPictures;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("erreur pour photos de cette album : " + album.toString(), e);
+        }
+        return null;
     }
 }
