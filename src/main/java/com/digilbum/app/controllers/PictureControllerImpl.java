@@ -43,12 +43,10 @@ public class PictureControllerImpl implements IPictureController {
         return (List<Picture>) pictureRepository.saveAll(pictures);
     }
 
-    public Picture savePicture(Picture picture) {
-        generatePicturePathFile(picture);
-
-        return pictureRepository.save(picture);
-
-    }
+    // public Picture savePicture(Picture picture) {
+    // generatePicturePathFile(picture);
+    // return pictureRepository.save(picture);
+    // }
 
     private void generatePicturePathFile(Picture picture) {
         String path = folderPath + picture.getAlbum().getName() + "/" + picture.getPathFile();
