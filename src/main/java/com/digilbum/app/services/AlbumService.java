@@ -25,7 +25,6 @@ public class AlbumService {
         Optional<User> user = userRepository.findById(1);
         album.setUser(user.get());
         album = albumRepository.save(album);
-        System.out.println("cabo");
         return album;
     }
 }
