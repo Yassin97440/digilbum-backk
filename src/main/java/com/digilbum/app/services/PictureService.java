@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +43,10 @@ public class PictureService {
     }
 
     @PostMapping(path = "/writeAndSavePictures", consumes = "multipart/form-data")
-    public void writeAndSavePictures(@RequestPart List<MultipartFile> pictures, Album album) {
+    public void writeAndSavePictures(@RequestPart Iterable<MultipartFile> pictures,
+            @RequestPart Album album) {
         System.out.println("call postMethodMultidata");
-        pictureController.writeAndSavePictures(pictures, album);
+        pictureController.writeAndSavePictures((List) pictures, album);
         // album.setPictures((Set<Picture>) newPictures);
         System.out.println("on save les pics");
         // pictureRepository.saveAll(newPictures);
