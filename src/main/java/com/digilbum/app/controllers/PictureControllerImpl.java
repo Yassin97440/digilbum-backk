@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Controller
@@ -21,6 +22,7 @@ public class PictureControllerImpl implements IPictureController {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     private final String folderPath = "Pictures/digilbum";
+    private final String BASE_PATH = "C:/Users/yassi/Pictures/digilbum";
 
     @Autowired
     PictureRepository pictureRepository;
@@ -64,8 +66,8 @@ public class PictureControllerImpl implements IPictureController {
         int i = 0;
         try {
             for (MultipartFile pic : pictures) {
-                String fileName = i++ + ".jpg";
-                Path path = Paths.get(folderPath, "/", fileName);
+                String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + ".png";
+                Path path = Paths.get(BASE_PATH, "/", fileName);
                 pic.transferTo(path);
                 System.out.println(path);
                 Picture newPic = new Picture();
@@ -76,7 +78,6 @@ public class PictureControllerImpl implements IPictureController {
                 return newPictures;
             }
         } catch (Exception e) {
-            e.printStackTrace();
             logger.error("erreur pour photos de cette album : " + album.toString(), e);
         }
         return null;
