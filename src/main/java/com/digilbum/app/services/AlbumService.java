@@ -7,6 +7,7 @@ import com.digilbum.app.repositorys.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,5 +27,10 @@ public class AlbumService {
         album.setUser(user.get());
         album = albumRepository.save(album);
         return album;
+    }
+
+    @GetMapping("/getAll")
+    public List<Album> loadAllAlbums() {
+        return (List<Album>) albumRepository.findAll();
     }
 }
