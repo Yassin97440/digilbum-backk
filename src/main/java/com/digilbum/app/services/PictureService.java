@@ -1,5 +1,6 @@
 package com.digilbum.app.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -42,11 +43,14 @@ public class PictureService {
         return null;
     }
 
-    @PostMapping(path = "/writeAndSavePictures", consumes = "multipart/form-data")
-    public void writeAndSavePictures(@RequestPart Iterable<MultipartFile> pictures,
+    @PostMapping(path = "/writeAndSavePictures", consumes = { "multipart/form-data",
+            MediaType.APPLICATION_OCTET_STREAM_VALUE })
+    public void writeAndSavePictures(@RequestPart MultipartFile picture,
             @RequestPart Album album) {
         System.out.println("call postMethodMultidata");
-        pictureController.writeAndSavePictures((List) pictures, album);
+        List<MultipartFile> lol = new ArrayList<>();
+        lol.add(picture);
+        pictureController.writeAndSavePictures(lol, album);
         // album.setPictures((Set<Picture>) newPictures);
         System.out.println("on save les pics");
         // pictureRepository.saveAll(newPictures);
