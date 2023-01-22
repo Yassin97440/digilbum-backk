@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class PictureControllerImpl implements IPictureController {
             for (MultipartFile pic : pictures) {
                 String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + "."
                         + getTypePictureFile(pic.getOriginalFilename());
-                Path path = Paths.get(BASE_PATH, "/", fileName.trim());
+                Path path = Paths.get(BASE_PATH, "/");
+                Files.copy(pic.getInputStream(), path.resolve(fileName.trim()));
                 pic.transferTo(path);
                 System.out.println(path);
                 Picture newPic = new Picture();
