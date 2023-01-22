@@ -2,6 +2,7 @@ package com.digilbum.app.models;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -23,7 +24,7 @@ public class Album {
     @Column(name = "EndDate", nullable = false)
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "UserId", nullable = true)
     private User user;
 
@@ -68,14 +69,6 @@ public class Album {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Set<Picture> getPictures() {
-        return pictures;
-    }
-
-    public void setPictures(Set<Picture> pictures) {
-        this.pictures = pictures;
     }
 
 }
