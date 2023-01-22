@@ -1,5 +1,6 @@
 package com.digilbum.app.controllers;
 
+import com.digilbum.app.dao.IPictureDao;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.repositorys.PictureRepository;
@@ -21,11 +22,14 @@ public class PictureControllerImpl implements IPictureController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final String folderPath = "Pictures/digilbum";
-    private final String BASE_PATH = "C:/Users/yassi/Pictures/digilbum";
+    private final String folderPath = "pictures/";
+    private final String BASE_PATH = "~/digilbum/" + folderPath;
 
     @Autowired
     PictureRepository pictureRepository;
+
+    @Autowired
+    IPictureDao pictureDao;
 
     /*
      * pour save un fichier, il faut construire le path du fichier
@@ -60,14 +64,21 @@ public class PictureControllerImpl implements IPictureController {
         pictureRepository.delete(picture);
     }
 
+    private String getTypePictureFile(String originalFileName) {
+        String[] nameSpleted = originalFileName.split("\\.");
+        return nameSpleted[1];
+    }
+
     @Override
     public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album) {
+        logger.info("call : writeAndSavePictures");
         List<Picture> newPictures = new ArrayList<>();
         int i = 0;
         try {
             for (MultipartFile pic : pictures) {
-                String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + ".png";
-                Path path = Paths.get(BASE_PATH, "/", fileName);
+                String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + "."
+                        + getTypePictureFile(pic.getOriginalFilename());
+                Path path = Paths.get(BASE_PATH, "/", fileName.trim());
                 pic.transferTo(path);
                 System.out.println(path);
                 Picture newPic = new Picture();
@@ -75,11 +86,16 @@ public class PictureControllerImpl implements IPictureController {
                 newPic.setPathFile(folderPath + "/" + fileName);
                 newPictures.add(newPic);
                 pictureRepository.save(newPic);
-                return newPictures;
             }
+            return newPictures;
         } catch (Exception e) {
             logger.error("erreur pour photos de cette album : " + album.toString(), e);
         }
         return null;
+    }
+
+    @Override
+    public Iterable<Picture> loadAllPictoreForAlbum(int albumId) {
+        return pictureDao.loadAllPictoreForAlbum(albumId);
     }
 }
