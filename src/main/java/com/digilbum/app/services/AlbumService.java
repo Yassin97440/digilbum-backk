@@ -30,7 +30,7 @@ public class AlbumService {
     }
 
     @GetMapping("/getAll")
-    public List<Album> loadAllAlbums() {
-        return (List<Album>) albumRepository.findAll();
+    public Iterable<Album> loadAllAlbums() {
+        return albumRepository.findAll();
     }
 }
