@@ -25,9 +25,9 @@ public class PictureControllerImpl implements IPictureController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final String folderPath = "pictures/";
+    private final String folderPath = "/digilbum/pictures/";
     // private final String folderPath = "digilbum/";
-    private final String BASE_PATH = "/root/digilbum/" + folderPath;
+    private final String BASE_PATH = System.getProperty("user.home") + folderPath;
     // private final String BASE_PATH = "C:/Users/yassi/Pictures/" + folderPath;
 
     @Autowired
@@ -83,7 +83,7 @@ public class PictureControllerImpl implements IPictureController {
             for (MultipartFile pic : pictures) {
                 String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + "."
                         + getTypePictureFile(pic.getOriginalFilename());
-                Path path = Paths.get(BASE_PATH, "/", fileName);
+                Path path = Paths.get(BASE_PATH, fileName);
                 // on créer u nouveau fichier
                 File picfile = path.toFile();
                 picfile.createNewFile();

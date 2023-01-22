@@ -24,6 +24,11 @@ public class HomeService {
         return "Hello " + name;
     }
 
+    @GetMapping("/userdir")
+    public @ResponseBody String sysUserdir() {
+        return System.getProperty("user.home");
+    }
+
     @PostMapping("/post")
     public @ResponseBody String postMethodTest(@RequestBody Album album) {
         System.out.println(album.getName());
