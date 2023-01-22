@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -80,12 +82,22 @@ public class PictureControllerImpl implements IPictureController {
                 String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + "."
                         + getTypePictureFile(pic.getOriginalFilename());
                 Path path = Paths.get(BASE_PATH, "/");
-                Files.copy(pic.getInputStream(), path.resolve(fileName.trim()));
-                pic.transferTo(path);
+
+                // on créer u nouveau fichier
+                File picfile = path.toFile();
+                picfile.createNewFile();
+                // on créer un output stream pour écrire le nouveau fichier
+                FileOutputStream fileOutputStream = new FileOutputStream(picfile);
+                // on donne le contenu de ce qu'on a recu
+                fileOutputStream.write(pic.getBytes());
+                fileOutputStream.close();
+                // copy(pic.getInputStream(), path.resolve(fileName.trim()));
+                // pic.transferTo(path);
                 System.out.println(path);
+                // on sauvarde la photo en bdd
                 Picture newPic = new Picture();
                 newPic.setAlbum(album);
-                newPic.setPathFile(folderPath + "/" + fileName);
+                newPic.setPathFile(picfile.getAbsolutePath()); // folderPath + "/" + fileName
                 newPictures.add(newPic);
                 pictureRepository.save(newPic);
             }
