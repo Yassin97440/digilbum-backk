@@ -1,6 +1,5 @@
 package com.digilbum.app.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.digilbum.app.controllers.IPictureController;
 import com.digilbum.app.dao.AlbumDao;
-import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.repositorys.PictureRepository;

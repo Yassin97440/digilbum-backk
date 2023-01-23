@@ -3,7 +3,6 @@ package com.digilbum.app.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 
 import jakarta.persistence.EntityManager;

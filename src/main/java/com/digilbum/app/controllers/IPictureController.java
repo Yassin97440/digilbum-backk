@@ -2,11 +2,6 @@ package com.digilbum.app.controllers;
 
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
-import com.digilbum.app.services.PictureService;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
