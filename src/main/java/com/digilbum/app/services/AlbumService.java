@@ -1,5 +1,6 @@
 package com.digilbum.app.services;
 
+import com.digilbum.app.controllers.IAlbumController;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.User;
 import com.digilbum.app.repositorys.AlbumRepository;
@@ -19,6 +20,9 @@ public class AlbumService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    IAlbumController albumController;
+
     @PostMapping("/new")
     public Album addNewAlbum(@RequestBody Album album) {
         System.out.println(album.getName());
@@ -33,4 +37,10 @@ public class AlbumService {
     public Iterable<Album> loadAllAlbums() {
         return albumRepository.findAll();
     }
+
+    @GetMapping("/albumsWithPictures")
+    public @ResponseBody Iterable<Album> loadAlbumsWithPictures() {
+        return albumController.loadAlbumsWithPictures();
+    }
+
 }

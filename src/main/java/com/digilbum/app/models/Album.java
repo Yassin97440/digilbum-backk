@@ -28,8 +28,16 @@ public class Album {
     @JoinColumn(name = "UserId", nullable = true)
     private User user;
 
-    @OneToMany(mappedBy = "album")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
     private Set<Picture> pictures = new LinkedHashSet<>();
+
+    public Set<Picture> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(Set<Picture> pictures) {
+        this.pictures = pictures;
+    }
 
     public Integer getId() {
         return id;
