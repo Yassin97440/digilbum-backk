@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -78,17 +77,18 @@ public class PictureControllerImpl implements IPictureController {
     public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album) {
         logger.info("call : writeAndSavePictures");
         List<Picture> newPictures = new ArrayList<>();
+        FileOutputStream fileOutputStream = null;
         int i = 0;
         try {
             for (MultipartFile pic : pictures) {
-                String fileName = album.getName() + Calendar.getInstance().getTimeInMillis() + "."
+                String fileName = album.getName().trim() + Calendar.getInstance().getTimeInMillis() + "."
                         + getTypePictureFile(pic.getOriginalFilename());
                 Path path = Paths.get(BASE_PATH, fileName);
                 // on créer u nouveau fichier
                 File picfile = path.toFile();
                 picfile.createNewFile();
                 // on créer un output stream pour écrire le nouveau fichier
-                FileOutputStream fileOutputStream = new FileOutputStream(picfile);
+                fileOutputStream = new FileOutputStream(picfile);
                 // on donne le contenu de ce qu'on a recu
                 fileOutputStream.write(pic.getBytes());
                 fileOutputStream.close();
