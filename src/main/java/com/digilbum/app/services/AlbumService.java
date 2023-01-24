@@ -24,10 +24,10 @@ public class AlbumService {
 
     @PostMapping("/new")
     public Album addNewAlbum(@RequestBody Album album) {
-        System.out.println(album.getName());
-        System.out.println(album);
         Optional<User> user = userRepository.findById(1);
-        album.setUser(user.get());
+        if (user.isPresent()) {
+            album.setUser(user.get());
+        }
         album = albumRepository.save(album);
         return album;
     }
