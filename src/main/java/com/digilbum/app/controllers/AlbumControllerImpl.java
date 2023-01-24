@@ -1,8 +1,10 @@
 package com.digilbum.app.controllers;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import com.digilbum.app.dao.IPictureDao;
@@ -18,27 +20,17 @@ public class AlbumControllerImpl implements IAlbumController {
     AlbumRepository albumRepository;
 
     @Autowired
-    IPictureDao pictureDao;
+    IPictureController pictureController;
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.digilbum.app.controllers.IAlbumController#loadAlbumsWithPictures()
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.digilbum.app.controllers.IAlbumController#loadAlbumsWithPictures()
-     */
     @Override
     public Iterable<Album> loadAlbumsWithPictures() {
         Iterable<Album> albums = albumRepository.findAll();
 
         for (Album album : albums) {
-            final Set<Picture> list = new HashSet();
+            final Set<Picture> list = new HashSet<>();
             album.setPictures(list);
+            pictureController.loadPicturesForAlbum(album).forEach(picture -> album.getPictures().add(picture));
 
-            pictureDao.loadAllPictoreForAlbum(album.getId()).iterator().forEachRemaining(album.getPictures()::add);
         }
 
         return albums;

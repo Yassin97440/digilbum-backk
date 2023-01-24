@@ -110,7 +110,7 @@ public class PictureControllerImpl implements IPictureController {
     }
 
     @Override
-    public Iterable<Picture> loadAllPictoreForAlbum(int albumId) {
-        return pictureDao.loadAllPictoreForAlbum(albumId);
+    public List<Picture> loadPicturesForAlbum(Album album) {
+        return pictureRepository.findByAlbum(album);
     }
 }

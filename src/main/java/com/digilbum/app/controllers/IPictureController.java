@@ -14,6 +14,6 @@ public interface IPictureController {
 
     public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album);
 
-    public Iterable<Picture> loadAllPictoreForAlbum(int albumId);
+    public List<Picture> loadPicturesForAlbum(Album album);
 
 }
