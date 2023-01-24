@@ -8,8 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IPictureController {
 
-    public List<Picture> saveNewPictures(List<Picture> pictures);
-
     public void deletePictureFile(Picture picture);
 
     public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album);

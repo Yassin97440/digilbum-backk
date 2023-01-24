@@ -36,10 +36,6 @@ public class PictureService {
     @Autowired
     AlbumDao albumDao;
 
-    public List<Picture> saveNewPictures(@RequestBody List<Picture> picturesToSave) {
-        return pictureController.saveNewPictures(picturesToSave);
-    }
-
     public List<Picture> loadAllPicturesForAlbum() {
         return null;
     }
