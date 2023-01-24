@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -35,34 +36,6 @@ public class PictureControllerImpl implements IPictureController {
     @Autowired
     IPictureDao pictureDao;
 
-    /*
-     * pour save un fichier, il faut construire le path du fichier
-     * quand on recoit une picture volatile, le pathFile contient le nom du fichier
-     * pour construire cet url on va utiliser le nom de l'album :
-     * PATH/images/album/pictureName
-     * puis plus tard :
-     * PATH/pictures/familly/event/album/pictureName
-     */
-    @Override
-    public List<Picture> saveNewPictures(List<Picture> pictures) {
-
-        for (Picture picture : pictures) {
-            generatePicturePathFile(picture);
-        }
-
-        return (List<Picture>) pictureRepository.saveAll(pictures);
-    }
-
-    // public Picture savePicture(Picture picture) {
-    // generatePicturePathFile(picture);
-    // return pictureRepository.save(picture);
-    // }
-
-    private void generatePicturePathFile(Picture picture) {
-        String path = folderPath + picture.getAlbum().getName() + "/" + picture.getPathFile();
-        picture.setPathFile(path);
-    }
-
     @Override
     public void deletePictureFile(Picture picture) {
         pictureRepository.delete(picture);
@@ -78,27 +51,27 @@ public class PictureControllerImpl implements IPictureController {
         logger.info("call : writeAndSavePictures");
         List<Picture> newPictures = new ArrayList<>();
         FileOutputStream fileOutputStream = null;
-        int i = 0;
+        String fileName = null;
+        File picfile = null;
         try {
             for (MultipartFile pic : pictures) {
-                String fileName = album.getName().trim() + Calendar.getInstance().getTimeInMillis() + "."
-                        + getTypePictureFile(pic.getOriginalFilename());
+                fileName = generatePicturePathFile(album, pic);
                 Path path = Paths.get(BASE_PATH, fileName);
                 // on créer u nouveau fichier
-                File picfile = path.toFile();
-                picfile.createNewFile();
+                picfile = path.toFile();
+                if (!picfile.createNewFile()) {
+                    throw new IOException("Can't create new file for pictures");
+                }
                 // on créer un output stream pour écrire le nouveau fichier
                 fileOutputStream = new FileOutputStream(picfile);
                 // on donne le contenu de ce qu'on a recu
                 fileOutputStream.write(pic.getBytes());
                 fileOutputStream.close();
-                // copy(pic.getInputStream(), path.resolve(fileName.trim()));
-                // pic.transferTo(path);
-                System.out.println(path);
                 // on sauvarde la photo en bdd
+
                 Picture newPic = new Picture();
                 newPic.setAlbum(album);
-                newPic.setPathFile(picfile.getAbsolutePath()); // folderPath + "/" + fileName
+                newPic.setPathFile(fileName); // folderPath + "/" + fileName
                 newPictures.add(newPic);
                 pictureRepository.save(newPic);
             }
@@ -107,6 +80,19 @@ public class PictureControllerImpl implements IPictureController {
             logger.error("erreur pour photos de cette album : " + album.toString(), e);
         }
         return null;
+    }
+
+    /*
+     * pour save un fichier, il faut construire le path du fichier
+     * quand on recoit une picture volatile, le pathFile contient le nom du fichier
+     * pour construire cet url on va utiliser le nom de l'album :
+     * /home/digilbum/pictures/
+     * puis plus tard :
+     * PATH/pictures/familly/event/album/pictureName
+     */
+    private String generatePicturePathFile(Album album, MultipartFile pic) {
+        return album.getName().trim() + Calendar.getInstance().getTimeInMillis() + "."
+                + getTypePictureFile(pic.getOriginalFilename());
     }
 
     @Override
