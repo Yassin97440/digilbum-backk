@@ -1,6 +1,5 @@
 package com.digilbum.app;
 
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,8 @@ public class AppApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedMethods("GET", "PUT", "POST", "DELETE").allowedOrigins("http://localhost:3000");
+				registry.addMapping("/**").allowedMethods("GET", "PUT", "POST", "DELETE")
+						.allowedOrigins("http://159.89.0.150:3000");
 			}
 		};
 	}
