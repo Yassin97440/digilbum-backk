@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +40,7 @@ public class Album {
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    @JsonManagedReference
     private Set<Picture> pictures = new LinkedHashSet<>();
 
     public Set<Picture> getPictures() {

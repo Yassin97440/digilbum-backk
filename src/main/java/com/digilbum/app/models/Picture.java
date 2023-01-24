@@ -1,5 +1,7 @@
 package com.digilbum.app.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,8 +15,9 @@ public class Picture {
     @Column(name = "PathFile", nullable = false)
     private String pathFile;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
     @JoinColumn(name = "AlbumId", nullable = false)
+    @JsonBackReference
     private Album album;
 
     public Integer getId() {
