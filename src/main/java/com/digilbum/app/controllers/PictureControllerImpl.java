@@ -25,7 +25,7 @@ public class PictureControllerImpl implements IPictureController {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final String folderPath = "/digilbum/pictures/";
+    private final String folderPath = "/pictures/";
     // private final String folderPath = "digilbum/";
     private final String BASE_PATH = System.getProperty("user.home") + folderPath;
     // private final String BASE_PATH = "C:/Users/yassi/Pictures/" + folderPath;
