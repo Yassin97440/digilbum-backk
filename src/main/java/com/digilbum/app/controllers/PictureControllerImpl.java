@@ -110,6 +110,6 @@ public class PictureControllerImpl implements IPictureController {
                 picture.setPathFile(WEB_PATH + picture.getPathFile());
             }
         }
-        return null;
+        return albums;
     }
 }

@@ -38,7 +38,7 @@ public class AlbumService {
     }
 
     @GetMapping("/albumsWithPictures")
-    public @ResponseBody Iterable<Album> loadAlbumsWithPictures() {
+    public Iterable<Album> loadAlbumsWithPictures() {
         return albumController.loadAlbumsWithPictures();
     }
 
