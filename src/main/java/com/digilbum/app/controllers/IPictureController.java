@@ -14,4 +14,6 @@ public interface IPictureController {
 
     public List<Picture> loadPicturesForAlbum(Album album);
 
+    public List<Album> addWebPathForPictures(List<Album> albums);
+
 }

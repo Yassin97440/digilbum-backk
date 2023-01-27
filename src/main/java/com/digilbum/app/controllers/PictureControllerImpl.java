@@ -28,6 +28,8 @@ public class PictureControllerImpl implements IPictureController {
     private final String folderPath = "/pictures/";
     // private final String folderPath = "digilbum/";
     private final String BASE_PATH = System.getProperty("user.home") + folderPath;
+
+    private final String WEB_PATH = "http://159.89.0.150/images/";
     // private final String BASE_PATH = "C:/Users/yassi/Pictures/" + folderPath;
 
     @Autowired
@@ -98,5 +100,16 @@ public class PictureControllerImpl implements IPictureController {
     @Override
     public List<Picture> loadPicturesForAlbum(Album album) {
         return pictureRepository.findByAlbum(album);
+    }
+
+    @Override
+    public List<Album> addWebPathForPictures(List<Album> albums) {
+        // TODO Auto-generated method stub
+        for (Album album : albums) {
+            for (Picture picture : album.getPictures()) {
+                picture.setPathFile(WEB_PATH + picture.getPathFile());
+            }
+        }
+        return null;
     }
 }
