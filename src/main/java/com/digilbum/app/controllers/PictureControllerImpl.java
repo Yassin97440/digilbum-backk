@@ -93,7 +93,7 @@ public class PictureControllerImpl implements IPictureController {
      * PATH/pictures/familly/event/album/pictureName
      */
     private String generatePicturePathFile(Album album, MultipartFile pic) {
-        return album.getName().trim() + Calendar.getInstance().getTimeInMillis() + "."
+        return album.getName().replaceAll(" ", "") + Calendar.getInstance().getTimeInMillis() + "."
                 + getTypePictureFile(pic.getOriginalFilename());
     }
 
