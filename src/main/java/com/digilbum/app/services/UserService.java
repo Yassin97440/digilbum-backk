@@ -1,7 +1,7 @@
 package com.digilbum.app.services;
 
-import com.digilbum.app.models.User;
-import com.digilbum.app.repositorys.UserRepository;
+import com.digilbum.app.security.user.User;
+import com.digilbum.app.security.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

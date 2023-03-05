@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.digilbum.app.security.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -36,7 +37,7 @@ public class Album {
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "UserId", nullable = true)
+    @JoinColumn(name = "id", nullable = true)
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
