@@ -91,4 +91,15 @@ public class Album {
         this.user = user;
     }
 
+    @Override
+    public String toString() {
+        return "Album{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", user=" + user +
+                ", pictures=" + pictures +
+                '}';
+    }
 }

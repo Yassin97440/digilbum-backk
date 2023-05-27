@@ -79,7 +79,7 @@ public class PictureControllerImpl implements IPictureController {
             }
             return newPictures;
         } catch (Exception e) {
-            logger.error("erreur pour photos de cette album : " + album.toString(), e);
+            logger.error("picFile :"+ picfile.toString()+"erreur pour photos de cette album : " + album.toString(), e);
         }
         return null;
     }
