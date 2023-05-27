@@ -19,7 +19,7 @@ public class AppApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/**").allowedMethods("GET", "PUT", "POST", "DELETE")
-						.allowedOrigins("http://159.89.0.150:3000");
+						.allowedOrigins("*");
 			}
 		};
 	}
