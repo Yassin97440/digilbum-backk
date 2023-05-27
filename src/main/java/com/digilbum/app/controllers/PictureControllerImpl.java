@@ -62,7 +62,7 @@ public class PictureControllerImpl implements IPictureController {
                 // on créer u nouveau fichier
                 picfile = path.toFile();
                 if (!picfile.createNewFile()) {
-                    throw new IOException("Can't create new file for pictures");
+                    throw new IOException("Can't create new file for pictures"+path.toString());
                 }
                 // on créer un output stream pour écrire le nouveau fichier
                 fileOutputStream = new FileOutputStream(picfile);
