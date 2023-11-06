@@ -31,6 +31,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain
   ) throws ServletException, IOException {
+    addCorsHeaders(response);
     final String authHeader = request.getHeader("Authorization");
     final String jwt;
     final String userEmail;
@@ -57,17 +58,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     }
-    addCorsHeaders(request, response);
     filterChain.doFilter(request, response);
   }
 
-  private void addCorsHeaders(HttpServletRequest request,
-                              HttpServletResponse response){
-    response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+  private void addCorsHeaders(HttpServletResponse response){
+    response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
     response.setHeader("Access-Control-Allow-Credentials", "true");
     response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-    response.setHeader("Access-Control-Max-Age", "3600");
-    response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
+    response.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
 
 
   }
