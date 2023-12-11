@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/album")
+@RequestMapping("/api/v2/album")
 //@CrossOrigin(origins = "loca")
 public class AlbumService {
     @Autowired

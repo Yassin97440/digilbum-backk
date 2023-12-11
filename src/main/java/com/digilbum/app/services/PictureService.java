@@ -16,7 +16,7 @@ import com.digilbum.app.dao.AlbumDao;
 import com.digilbum.app.models.Picture;
 
 @RestController
-@RequestMapping("/pictures")
+@RequestMapping("/api/v2/pictures")
 public class PictureService {
 
     public final String BASE_PATH = "file:///C:/Users/yassi/";
