@@ -1,28 +1,25 @@
-package com.digilbum.app.services;
+package com.digilbum.app.controller;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.digilbum.app.controllers.IPictureController;
+import com.digilbum.app.service.IPictureService;
 import com.digilbum.app.dao.AlbumDao;
 import com.digilbum.app.models.Picture;
 
+
 @RestController
 @RequestMapping("/api/v2/pictures")
-public class PictureService {
+public class PictureController {
 
     public final String BASE_PATH = "file:///C:/Users/yassi/";
 
     @Autowired
-    IPictureController pictureController;
+    IPictureService pictureController;
 
     @Autowired
     AlbumDao albumDao;
@@ -31,9 +28,11 @@ public class PictureService {
         return null;
     }
 
-    @PostMapping(path = "/writeAndSavePictures", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public void writeAndSavePictures(@RequestParam List<MultipartFile> pictures,
-            @RequestPart String albumName) {
+    @PostMapping(path = "/writeAndSavePictures") //, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE}
+    public void writeAndSavePictures(
+            @RequestParam List<MultipartFile> pictures,
+            @RequestPart String albumName)
+    {
         System.out.println("call postMethodMultidata");
         pictureController.writeAndSavePictures(pictures, albumDao.loadAlbumByName(albumName));
         System.out.println("end postMethodMultidata");

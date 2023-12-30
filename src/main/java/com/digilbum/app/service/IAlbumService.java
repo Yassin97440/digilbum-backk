@@ -1,8 +1,8 @@
-package com.digilbum.app.controllers;
+package com.digilbum.app.service;
 
 import com.digilbum.app.models.Album;
 
-public interface IAlbumController {
+public interface IAlbumService {
 
     public Iterable<Album> loadAlbumsWithPictures();
 

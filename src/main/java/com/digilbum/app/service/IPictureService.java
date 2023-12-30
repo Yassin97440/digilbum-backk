@@ -1,4 +1,4 @@
-package com.digilbum.app.controllers;
+package com.digilbum.app.service;
 
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public interface IPictureController {
+public interface IPictureService {
 
     public void deletePictureFile(Picture picture);
 

@@ -1,4 +1,4 @@
-package com.digilbum.app.controllers;
+package com.digilbum.app.service;
 
 import com.digilbum.app.dao.IPictureDao;
 import com.digilbum.app.models.Album;
@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 
 @Controller
-public class PictureControllerImpl implements IPictureController {
+public class PictureServiceImpl implements IPictureService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 

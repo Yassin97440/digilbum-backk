@@ -1,12 +1,11 @@
-package com.digilbum.app.services;
+package com.digilbum.app.controller;
 
-import com.digilbum.app.controllers.IAlbumController;
+import com.digilbum.app.service.IAlbumService;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.repositorys.AlbumRepository;
 
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +15,18 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v2/album")
 //@CrossOrigin(origins = "loca")
-public class AlbumService {
-    @Autowired
+public class AlbumController {
     AlbumRepository albumRepository;
-
-    @Autowired
     UserRepository userRepository;
+    IAlbumService albumController;
 
-    @Autowired
-    IAlbumController albumController;
+    public AlbumController(AlbumRepository albumRepository,
+                           UserRepository userRepository,
+                           IAlbumService albumController) {
+        this.albumRepository = albumRepository;
+        this.userRepository = userRepository;
+        this.albumController = albumController;
+    }
 
     @PostMapping("/new")
     public Album addNewAlbum(@RequestBody Album album) {

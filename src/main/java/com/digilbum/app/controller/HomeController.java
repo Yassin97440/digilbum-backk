@@ -1,11 +1,11 @@
-package com.digilbum.app.services;
+package com.digilbum.app.controller;
 
 import com.digilbum.app.models.Album;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/api/v2/home")
-public class HomeService {
+public class HomeController {
 
 
     @GetMapping("/hello/{name}")

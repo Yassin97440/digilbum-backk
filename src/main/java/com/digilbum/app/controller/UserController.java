@@ -1,4 +1,4 @@
-package com.digilbum.app.services;
+package com.digilbum.app.controller;
 
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v2/ser")
-public class UserService {
+public class UserController {
 
     @Autowired
     UserRepository userRepo;
