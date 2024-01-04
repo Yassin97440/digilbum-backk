@@ -3,6 +3,7 @@ package com.digilbum.app.service;
 import com.digilbum.app.dao.IPictureDao;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
+import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.repositorys.PictureRepository;
 
 import org.slf4j.Logger;
@@ -37,6 +38,8 @@ public class PictureServiceImpl implements IPictureService {
 
     @Autowired
     IPictureDao pictureDao;
+    @Autowired
+    private AlbumRepository albumRepository;
 
     @Override
     public void deletePictureFile(Picture picture) {
@@ -49,15 +52,17 @@ public class PictureServiceImpl implements IPictureService {
     }
 
     @Override
-    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album) {
+    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) {
         logger.info("call : writeAndSavePictures");
+
+        Album album =  albumRepository.findById(albumId).get();
         List<Picture> newPictures = new ArrayList<>();
         FileOutputStream fileOutputStream = null;
         String fileName = null;
         File picfile = null;
         try {
             for (MultipartFile pic : pictures) {
-                fileName = generatePicturePathFile(album, pic);
+                fileName = generatePicturePathFile( album , pic);
                 Path path = Paths.get(BASE_PATH, fileName);
                 // on créer u nouveau fichier
                 picfile = path.toFile();

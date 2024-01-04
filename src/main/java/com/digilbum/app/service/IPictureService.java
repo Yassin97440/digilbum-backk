@@ -10,7 +10,7 @@ public interface IPictureService {
 
     public void deletePictureFile(Picture picture);
 
-    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Album album);
+    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId);
 
     public List<Picture> loadPicturesForAlbum(Album album);
 

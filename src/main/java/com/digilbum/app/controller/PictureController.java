@@ -2,6 +2,7 @@ package com.digilbum.app.controller;
 
 import java.util.List;
 
+import com.digilbum.app.models.Album;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,11 +31,12 @@ public class PictureController {
 
     @PostMapping(path = "/writeAndSavePictures") //, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE}
     public void writeAndSavePictures(
-            @RequestParam List<MultipartFile> pictures,
-            @RequestPart String albumName)
+            @RequestPart("pictures") List<MultipartFile> pictures,
+            @RequestParam String albumId)
     {
+
         System.out.println("call postMethodMultidata");
-        pictureController.writeAndSavePictures(pictures, albumDao.loadAlbumByName(albumName));
+        pictureController.writeAndSavePictures(pictures, Integer.parseInt(albumId));
         System.out.println("end postMethodMultidata");
 
     }
