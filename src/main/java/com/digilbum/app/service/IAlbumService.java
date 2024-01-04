@@ -6,4 +6,6 @@ public interface IAlbumService {
 
     public Iterable<Album> loadAlbumsWithPictures();
 
+    public Album newAlbum(Album newAlbum);
+
 }
