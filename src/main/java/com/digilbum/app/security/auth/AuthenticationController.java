@@ -14,14 +14,14 @@ public class AuthenticationController {
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public @ResponseBody ResponseEntity<AuthenticationResponse> register( @RequestBody RegisterRequest request )
+  public ResponseEntity<AuthenticationResponse> register( @RequestBody RegisterRequest request )
   {
-    return new ResponseEntity<AuthenticationResponse>(service.register(request), HttpStatus.OK); // ResponseEntity.ok(service.register(request))
+    return new ResponseEntity<>(service.register(request), HttpStatus.OK); // ResponseEntity.ok(service.register(request))
   }
   @PostMapping("/login")
   public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request  )
   {
-    return new ResponseEntity<AuthenticationResponse>(service.authenticate(request), HttpStatus.OK);
+    return new ResponseEntity<>(service.authenticate(request), HttpStatus.OK);
   }
 
 
