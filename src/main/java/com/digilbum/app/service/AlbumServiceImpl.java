@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import com.digilbum.app.models.Album;
@@ -40,7 +39,6 @@ public class AlbumServiceImpl implements IAlbumService {
     public Album newAlbum(Album newAlbum) {
 
         Optional<User> user = userRepository.findById(1
-//                ( (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()
         );
         user.ifPresent(newAlbum::setUser);
         return albumRepository.save(newAlbum);

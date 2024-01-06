@@ -109,7 +109,6 @@ public class PictureServiceImpl implements IPictureService {
 
     @Override
     public List<Album> addWebPathForPictures(List<Album> albums) {
-        // TODO Auto-generated method stub
         for (Album album : albums) {
             for (Picture picture : album.getPictures()) {
                 picture.setPathFile(WEB_PATH + picture.getPathFile());

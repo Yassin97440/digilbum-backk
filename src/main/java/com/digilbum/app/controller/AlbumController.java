@@ -37,7 +37,6 @@ public class AlbumController {
 
     @GetMapping("/albumsWithPictures")
     public ResponseEntity<Iterable<Album>> loadAlbumsWithPictures() {
-        System.out.println(HttpStatus.OK);
         return new ResponseEntity<>(albumService.loadAlbumsWithPictures(), HttpStatus.OK);
     }
 
