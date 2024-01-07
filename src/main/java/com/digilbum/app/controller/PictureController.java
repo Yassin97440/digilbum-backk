@@ -2,9 +2,8 @@ package com.digilbum.app.controller;
 
 import java.util.List;
 
-import com.digilbum.app.models.Album;
+import com.digilbum.app.dto.PictureDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,7 +19,7 @@ public class PictureController {
     public final String BASE_PATH = "file:///C:/Users/yassi/";
 
     @Autowired
-    IPictureService pictureController;
+    IPictureService pictureService;
 
     @Autowired
     AlbumDao albumDao;
@@ -36,9 +35,13 @@ public class PictureController {
     {
 
         System.out.println("call postMethodMultidata");
-        pictureController.writeAndSavePictures(pictures, Integer.parseInt(albumId));
+        pictureService.writeAndSavePictures(pictures, Integer.parseInt(albumId));
         System.out.println("end postMethodMultidata");
 
+    }
+    @GetMapping("/findForAlbum")
+    public List<PictureDto> findPicturesForAlbumId(@RequestParam Integer albumId){
+        return pictureService.loadPicturesForAlbum(albumId);
     }
 
 }

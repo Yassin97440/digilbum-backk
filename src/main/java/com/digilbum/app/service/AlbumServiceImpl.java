@@ -3,6 +3,7 @@ package com.digilbum.app.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
 import org.springframework.stereotype.Controller;
@@ -31,10 +32,26 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public Iterable<Album> loadAlbumsWithPictures() {
+
         List<Album> albums = albumRepository.findAll();
         return pictureController.addWebPathForPictures(albums);
     }
 
+    @Override
+    public Iterable<Album> loadAlbumsWithPicturesForUser(Integer userId) {
+        List<AlbumDto> albumDtos = albumRepository.findByUserId(userId);
+        for (AlbumDto albumDto : albumDtos){
+//            pictureController.addWebPathForPicturesDto();
+        }
+        List<Album> albums = albumRepository.findAll();
+        return pictureController.addWebPathForPictures(albums);
+    }
+
+
+    @Override
+    public List<AlbumDto> loadAlbumForUser(Integer userId){
+       return albumRepository.findByUserId(userId);
+    }
     @Override
     public Album newAlbum(Album newAlbum) {
 

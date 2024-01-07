@@ -1,5 +1,6 @@
 package com.digilbum.app.service;
 
+import com.digilbum.app.dto.PictureDto;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 import java.util.List;
@@ -15,5 +16,7 @@ public interface IPictureService {
     public List<Picture> loadPicturesForAlbum(Album album);
 
     public List<Album> addWebPathForPictures(List<Album> albums);
+
+    List<PictureDto> loadPicturesForAlbum(Integer albumId);
 
 }

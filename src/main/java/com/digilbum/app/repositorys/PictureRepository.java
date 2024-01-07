@@ -5,8 +5,14 @@ import com.digilbum.app.models.Picture;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.lang.NonNull;
 
 public interface PictureRepository extends CrudRepository<Picture, Integer> {
-    public List<Picture> findByAlbum(Album album);
+    List<Picture> findByAlbum(Album album);
+
+    @Query("select p from Picture p where p.album.id = ?1")
+    List<Picture> findByAlbumId(@NonNull Integer id);
+
 }

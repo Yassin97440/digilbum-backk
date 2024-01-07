@@ -1,5 +1,6 @@
 package com.digilbum.app.controller;
 
+import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.service.IAlbumService;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.repositorys.AlbumRepository;
@@ -8,6 +9,9 @@ import com.digilbum.app.security.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/album")
@@ -31,8 +35,14 @@ public class AlbumController {
     }
 
     @GetMapping("/getAll")
-    public Iterable<Album> loadAllAlbums() {
-        return albumRepository.findAll();
+    public Iterable<AlbumDto> loadAllAlbums() {
+
+        Iterable<Album> albums=albumRepository.findAll();
+        List<AlbumDto> returnList = new ArrayList<>();
+        for (Album album : albums){
+            returnList.add(new AlbumDto(album.getId(), album.getName()));
+        }
+        return returnList;
     }
 
     @GetMapping("/albumsWithPictures")

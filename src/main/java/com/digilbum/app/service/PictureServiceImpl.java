@@ -1,6 +1,7 @@
 package com.digilbum.app.service;
 
 import com.digilbum.app.dao.IPictureDao;
+import com.digilbum.app.dto.PictureDto;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.repositorys.AlbumRepository;
@@ -86,10 +87,10 @@ public class PictureServiceImpl implements IPictureService {
         } catch (Exception e) {
             logger.error("erreur pour photos de cette album : " + album.toString(), e);
         }
-        return null;
+        return new ArrayList<>();
     }
 
-    /*
+    /**
      * pour save un fichier, il faut construire le path du fichier
      * quand on recoit une picture volatile, le pathFile contient le nom du fichier
      * pour construire cet url on va utiliser le nom de l'album :
@@ -115,5 +116,24 @@ public class PictureServiceImpl implements IPictureService {
             }
         }
         return albums;
+    }
+
+    @Override
+    public List<PictureDto> loadPicturesForAlbum(Integer albumId) {
+        return addWebPathForPicturesDto(
+                pictureRepository.findByAlbumId(albumId)
+        );
+    }
+
+
+    public List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
+        final List<PictureDto> finalDto = new ArrayList<>();
+            for (Picture picture : pictures) {
+                finalDto.add( new PictureDto(
+                        picture.getId(),
+                        WEB_PATH + picture.getPathFile(),
+                        picture.getAlbum().getId()));
+            }
+        return finalDto;
     }
 }
