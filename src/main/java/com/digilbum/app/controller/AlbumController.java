@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://159.89.0.150:3000")
 @RequestMapping("/api/v2/album")
 //@CrossOrigin(origins = "loca")
 public class AlbumController {
