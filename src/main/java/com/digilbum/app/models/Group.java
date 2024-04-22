@@ -18,8 +18,9 @@ public class Group {
     private Integer id;
 
     @Lob
+    @Enumerated(EnumType.STRING)
     @Column(name = "Type", nullable = false)
-    private String type;
+    private GroupType type;
 
     @ColumnDefault("not specified")
     @Column(name = "Name", nullable = false, length = 150)
