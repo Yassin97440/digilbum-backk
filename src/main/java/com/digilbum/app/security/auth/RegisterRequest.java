@@ -1,5 +1,6 @@
 package com.digilbum.app.security.auth;
 
+import com.digilbum.app.dto.GroupDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class RegisterRequest {
   private String lastname;
   private String email;
   private String password;
+  private GroupDto group;
 }
