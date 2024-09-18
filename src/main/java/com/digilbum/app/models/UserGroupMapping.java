@@ -14,7 +14,7 @@ import java.time.Instant;
 @Entity
 public class UserGroupMapping {
     @EmbeddedId
-    private UserGroupMappingId id;
+    private UserGroupMappingId id = new UserGroupMappingId();
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

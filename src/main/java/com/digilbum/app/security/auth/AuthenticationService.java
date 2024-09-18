@@ -1,6 +1,7 @@
 package com.digilbum.app.security.auth;
 
 
+import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.security.config.JwtService;
 import com.digilbum.app.security.token.Token;
 import com.digilbum.app.security.token.TokenRepository;
@@ -8,6 +9,7 @@ import com.digilbum.app.security.token.TokenType;
 import com.digilbum.app.security.user.Role;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
+import com.digilbum.app.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,16 +24,21 @@ public class AuthenticationService {
   private final PasswordEncoder passwordEncoder;
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
+  private final GroupService groupService;
 
   public AuthenticationResponse register(RegisterRequest request) {
+
+     UserRegisterRequest userRequest = request.user();
     var user = User.builder()
-        .firstname(request.getFirstname())
-        .lastname(request.getLastname())
-        .email(request.getEmail())
-        .password(passwordEncoder.encode(request.getPassword()))
+        .firstname(userRequest.getFirstname())
+        .lastname(userRequest.getLastname())
+        .email(userRequest.getEmail())
+        .password(passwordEncoder.encode(userRequest.getPassword()))
         .role(Role.USER)
         .build();
     var savedUser = repository.save(user);
+    GroupDto newGroup = groupService.create(request.group(), savedUser);
+
     var jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()

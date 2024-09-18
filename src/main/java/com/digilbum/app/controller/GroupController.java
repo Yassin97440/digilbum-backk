@@ -5,12 +5,10 @@ import com.digilbum.app.security.user.User;
 import com.digilbum.app.service.GroupService;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController()
-@RequestMapping("/group")
+@RequestMapping("/api/v2/group")
 @AllArgsConstructor
 public class GroupController {
 
@@ -27,5 +25,10 @@ public class GroupController {
         User user = (User) session.getAttribute("user");
         return groupService.addMember(joinCode, user);
     }
-
+    @GetMapping("/byJoinCode")
+    public GroupDto findByJoinCode(@RequestParam String joinCode){
+        return groupService.toDto(
+                groupService.findByJoinCode(joinCode)
+        );
+    }
 }

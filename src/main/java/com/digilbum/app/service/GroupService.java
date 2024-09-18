@@ -34,9 +34,9 @@ public class GroupService {
                 Group.builder()
                         .name(groupToCreate.name())
                         .type(groupToCreate.type())
+                        .joinCode(generateJoinCode())
                         .build()
         );
-
         return toDto(
                 userGroupMappingRepository.save(
                         createAssociation(creator, gr, true)
@@ -70,12 +70,17 @@ public class GroupService {
         return groupRepository.findByJoinCode(joinCode);
     }
 
+    public String generateJoinCode(){
+
+        return "YOUPI786";
+    }
     public GroupDto toDto(Group group){
         return new GroupDto(
                 group.getId(),
                 group.getType(),
                 group.getName(),
-                group.getCreatedAt()
+                group.getCreatedAt(),
+                group.getJoinCode()
         );
     }
 }

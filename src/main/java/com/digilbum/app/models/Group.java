@@ -33,7 +33,7 @@ public class Group {
     @Column(name = "CreatedAt")
     private Instant createdAt;
 
-    @Column(name = "JoinCode", nullable = false, length = 250)
+    @Column(name = "JoinCode", nullable = false, length = 250, unique = true)
     private String joinCode;
 
 }

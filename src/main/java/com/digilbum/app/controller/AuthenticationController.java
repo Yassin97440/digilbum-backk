@@ -1,5 +1,6 @@
-package com.digilbum.app.security.auth;
+package com.digilbum.app.controller;
 
+import com.digilbum.app.security.auth.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ public class AuthenticationController {
   private final AuthenticationService service;
 
   @PostMapping("/register")
-  public ResponseEntity<AuthenticationResponse> register( @RequestBody RegisterRequest request )
+  public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request )
   {
     return new ResponseEntity<>(service.register(request), HttpStatus.OK); // ResponseEntity.ok(service.register(request))
   }

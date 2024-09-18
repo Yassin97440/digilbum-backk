@@ -10,5 +10,5 @@ import java.time.Instant;
  * DTO for {@link com.digilbum.app.models.Group}
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record GroupDto(Integer id, GroupType type, String name, Instant createdAt) implements Serializable {
+public record GroupDto(Integer id, GroupType type, String name, Instant createdAt, String joinCode) implements Serializable {
 }
