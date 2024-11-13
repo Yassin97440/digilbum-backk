@@ -6,7 +6,6 @@ import com.digilbum.app.security.config.JwtService;
 import com.digilbum.app.security.token.Token;
 import com.digilbum.app.security.token.TokenRepository;
 import com.digilbum.app.security.token.TokenType;
-import com.digilbum.app.security.user.Role;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
 import com.digilbum.app.service.GroupService;
@@ -34,7 +33,6 @@ public class AuthenticationService {
         .lastname(userRequest.getLastname())
         .email(userRequest.getEmail())
         .password(passwordEncoder.encode(userRequest.getPassword()))
-        .role(Role.USER)
         .build();
     var savedUser = repository.save(user);
     GroupDto newGroup = groupService.create(request.group(), savedUser);
