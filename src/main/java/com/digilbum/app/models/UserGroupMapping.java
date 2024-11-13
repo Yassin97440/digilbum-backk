@@ -4,6 +4,7 @@ import com.digilbum.app.security.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
 @Builder
@@ -12,25 +13,26 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@Table
 public class UserGroupMapping {
     @EmbeddedId
     private UserGroupMappingId id = new UserGroupMappingId();
 
-    @MapsId("userId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "UserId", nullable = false)
-    private User user;
+    public Group getGroup(){
+        return id.getGroup();
+    }
 
-    @MapsId("groupId")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "GroupId", nullable = false)
-    private Group group;
+    public User getUser(){
+        return id.getUser();
+    }
 
     @ColumnDefault("0")
-    @Column(name = "Admin", nullable = false)
+    @Column( nullable = false)
     private Boolean admin = false;
 
+    @CreatedDate
     @Column(name = "joinedAt")
     private Instant joinedAt;
+
 
 }

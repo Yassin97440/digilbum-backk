@@ -1,8 +1,10 @@
 package com.digilbum.app.models;
 
+import com.digilbum.app.security.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
@@ -13,27 +15,29 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name = "`Group`")
+@Table(name= "`group`")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "GroupId", nullable = false)
+    @Column(name = "group_id", nullable = false)
     private Integer id;
 
     @Lob
     @Enumerated(EnumType.STRING)
-    @Column(name = "Type", nullable = false)
+    @Column( nullable = false)
     private GroupType type;
 
     @ColumnDefault("not specified")
-    @Column(name = "Name", nullable = false, length = 150)
+    @Column( nullable = false, length = 150)
     private String name;
 
     @CreatedDate
-    @Column(name = "CreatedAt")
     private Instant createdAt;
 
-    @Column(name = "JoinCode", nullable = false, length = 250, unique = true)
+    @CreatedBy()
+    private User createdBy;
+
+    @Column( nullable = false, length = 250, unique = true)
     private String joinCode;
 
 }

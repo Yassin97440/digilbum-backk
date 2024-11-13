@@ -30,13 +30,15 @@ public class GroupService {
     }
 
     public GroupDto create(GroupDto groupToCreate, User creator){
-        final Group gr = groupRepository.save(
-                Group.builder()
-                        .name(groupToCreate.name())
-                        .type(groupToCreate.type())
-                        .joinCode(generateJoinCode())
-                        .build()
-        );
+        Group group = Group.builder()
+                .name(groupToCreate.name())
+                .type(groupToCreate.type())
+                .joinCode(generateJoinCode())
+                .build();
+//        group.
+        final Group gr = groupRepository.save(group);
+
+
         return toDto(
                 userGroupMappingRepository.save(
                         createAssociation(creator, gr, true)
@@ -57,12 +59,13 @@ public class GroupService {
     }
 
     private UserGroupMapping createAssociation(User user, Group gr, boolean admin) {
-        return UserGroupMapping.builder()
-                .user(user)
-                .group(gr)
-                .joinedAt(Instant.now())
-                .admin(admin)
-                .build();
+        return null;
+//                UserGroupMapping.builder()
+//                .user(user)
+//                .group(gr)
+//                .joinedAt(Instant.now())
+//                .admin(admin)
+//                .build();
 
     }
 

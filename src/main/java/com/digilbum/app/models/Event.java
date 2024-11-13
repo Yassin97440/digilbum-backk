@@ -10,30 +10,25 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@Entity
+@Table
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "EventId", nullable = false)
+    @Column(nullable = false)
     private Integer id;
 
     @ColumnDefault("not specified")
-    @Column(name = "Name", nullable = false, length = 150)
+    @Column( nullable = false, length = 150)
     private String name;
 
-    @Column(name = "StarteddAt")
-    private LocalDate starteddAt;
+    private LocalDate startedAt;
 
-    @Column(name = "EndedAt")
     private LocalDate endedAt;
 
-    @Column(name = "FavoritePicture")
     private Integer favoritePicture;
 
-    @Column(name = "createdAt")
     private Instant createdAt;
 
-    @Column(name = "createdBy")
     private Integer createdBy;
 
 }

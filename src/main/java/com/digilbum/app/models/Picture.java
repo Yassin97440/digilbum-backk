@@ -9,14 +9,14 @@ import jakarta.persistence.*;
 public class Picture {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PictureId", nullable = false)
+    @Column(name = "picture_id", nullable = false)
     private Integer id;
 
     @Column(name = "PathFile", nullable = false)
     private String pathFile;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "AlbumId", nullable = false)
+    @JoinColumn(name = "album_id", nullable = false)
     @JsonBackReference
     private Album album;
 

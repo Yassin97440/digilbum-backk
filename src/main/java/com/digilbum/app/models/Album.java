@@ -24,20 +24,20 @@ import jakarta.persistence.Table;
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "AlbumId", nullable = false)
+    @Column(name = "album_id", nullable = false)
     private Integer id;
 
-    @Column(name = "Name", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(name = "StartDate", nullable = false)
+    @Column( nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "EndDate", nullable = false)
+    @Column( nullable = false)
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
-    @JoinColumn(name = "id", nullable = true)
+    @JoinColumn(nullable = true)
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")

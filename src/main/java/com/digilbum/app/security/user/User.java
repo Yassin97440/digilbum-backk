@@ -2,42 +2,48 @@ package com.digilbum.app.security.user;
 
 import com.digilbum.app.security.token.Token;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "_user")
+@Table
 public class User implements UserDetails {
 
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
+  @Setter
+  @Getter
   private String firstname;
+  @Setter
+  @Getter
   private String lastname;
+  @Setter
+  @Getter
   private String email;
+  @Setter
   private String password;
 
-  @Enumerated(EnumType.STRING)
-  private Role role;
-
+  @Setter
+  @Getter
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority(role.name()));
+  @ManyToMany
+  private final List<Role> roles = new ArrayList<>();
+
+  public Collection<Role> getAuthorities() {
+    return roles;
   }
 
   @Override
