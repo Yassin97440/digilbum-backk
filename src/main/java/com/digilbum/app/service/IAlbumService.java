@@ -11,7 +11,7 @@ public interface IAlbumService {
 
     Iterable<Album> loadAlbumsWithPicturesForUser(Integer userId);
 
-    List<AlbumDto> loadAlbumForUser(Integer userId);
+    List<AlbumDto> loadDtosForUser(Integer userId);
 
     public Album newAlbum(Album newAlbum);
 

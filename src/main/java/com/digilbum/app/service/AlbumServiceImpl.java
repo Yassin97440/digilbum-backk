@@ -39,18 +39,14 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public Iterable<Album> loadAlbumsWithPicturesForUser(Integer userId) {
-        List<AlbumDto> albumDtos = albumRepository.findByUserId(userId);
-        for (AlbumDto albumDto : albumDtos){
-//            pictureController.addWebPathForPicturesDto();
-        }
-        List<Album> albums = albumRepository.findAll();
+        List<Album> albums = albumRepository.findByUserId(userId);
         return pictureController.addWebPathForPictures(albums);
     }
 
 
     @Override
-    public List<AlbumDto> loadAlbumForUser(Integer userId){
-       return albumRepository.findByUserId(userId);
+    public List<AlbumDto> loadDtosForUser(Integer userId){
+       return albumRepository.findDtoByUserId(userId);
     }
     @Override
     public Album newAlbum(Album newAlbum) {

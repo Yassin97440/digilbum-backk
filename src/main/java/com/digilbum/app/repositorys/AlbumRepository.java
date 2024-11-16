@@ -12,5 +12,7 @@ public interface AlbumRepository extends JpaRepository<Album, Integer> {
 
     @Query("SELECT new com.digilbum.app.dto.AlbumDto(a.id, a.name)" +
             "FROM Album  a WHERE a.user.id = ?1")
-    List<AlbumDto> findByUserId(Integer userId);
+    List<AlbumDto> findDtoByUserId(Integer userId);
+
+    List<Album> findByUserId(Integer userId);
 }
