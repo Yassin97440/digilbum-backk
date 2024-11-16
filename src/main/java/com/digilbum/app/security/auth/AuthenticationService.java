@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -28,13 +30,13 @@ public class AuthenticationService {
   public AuthenticationResponse register(RegisterRequest request) {
 
      UserRegisterRequest userRequest = request.user();
-    var user = User.builder()
+    User user = User.builder()
         .firstname(userRequest.getFirstname())
         .lastname(userRequest.getLastname())
         .email(userRequest.getEmail())
         .password(passwordEncoder.encode(userRequest.getPassword()))
         .build();
-    var savedUser = repository.save(user);
+    User savedUser = repository.save(user);
     GroupDto newGroup = groupService.create(request.group(), savedUser);
 
     var jwtToken = jwtService.generateToken(user);
@@ -52,9 +54,9 @@ public class AuthenticationService {
             request.getPassword()
         )
     );
-    var user = repository.findByEmail(request.getEmail())
+    User user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    var jwtToken = jwtService.generateToken(user);
+    String jwtToken = jwtService.generateToken(user);
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
@@ -63,7 +65,7 @@ public class AuthenticationService {
   }
 
   private void saveUserToken(User user, String jwtToken) {
-    var token = Token.builder()
+    Token token = Token.builder()
         .user(user)
         .token(jwtToken)
         .tokenType(TokenType.BEARER)
@@ -74,7 +76,7 @@ public class AuthenticationService {
   }
 
   private void revokeAllUserTokens(User user) {
-    var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+    List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
     if (validUserTokens.isEmpty())
       return;
     validUserTokens.forEach(token -> {
