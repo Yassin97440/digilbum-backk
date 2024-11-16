@@ -22,8 +22,16 @@ public class UserGroupMapping {
         return id.getGroup();
     }
 
+    public void setGroup(Group group) {
+        id.setGroup(group);
+    }
+
     public User getUser(){
         return id.getUser();
+    }
+
+    public void setUser(User user) {
+        id.setUser(user);
     }
 
     @ColumnDefault("0")
