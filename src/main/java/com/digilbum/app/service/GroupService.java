@@ -3,6 +3,7 @@ package com.digilbum.app.service;
 import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.models.Group;
 import com.digilbum.app.models.UserGroupMapping;
+import com.digilbum.app.models.UserGroupMappingId;
 import com.digilbum.app.repositorys.GroupRepository;
 import com.digilbum.app.repositorys.UserGroupMappingRepository;
 import com.digilbum.app.security.user.User;
@@ -35,7 +36,6 @@ public class GroupService {
                 .type(groupToCreate.type())
                 .joinCode(generateJoinCode())
                 .build();
-//        group.
         final Group gr = groupRepository.save(group);
 
 
@@ -59,13 +59,12 @@ public class GroupService {
     }
 
     private UserGroupMapping createAssociation(User user, Group gr, boolean admin) {
-        return null;
-//                UserGroupMapping.builder()
-//                .user(user)
-//                .group(gr)
-//                .joinedAt(Instant.now())
-//                .admin(admin)
-//                .build();
+
+        return new UserGroupMapping(
+                new UserGroupMappingId(user, gr),
+                admin,
+                Instant.now()
+        );
 
     }
 
