@@ -39,7 +39,7 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
-  @ManyToMany
+  @ManyToMany(fetch = FetchType.EAGER)
   private final List<Role> roles = new ArrayList<>();
 
   public Collection<Role> getAuthorities() {
