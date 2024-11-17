@@ -8,16 +8,19 @@ import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.security.user.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
-@CrossOrigin(origins = "http://159.89.0.150:3000")
 @RequestMapping("/api/v2/album")
-//@CrossOrigin(origins = "loca")
 public class AlbumController {
+
+    Logger logger = Logger.getLogger(getClass().getName());
+
     AlbumRepository albumRepository;
     UserRepository userRepository;
     IAlbumService albumService;
@@ -31,12 +34,20 @@ public class AlbumController {
     }
 
     @PostMapping("/new")
-    public Album addNewAlbum(@RequestBody Album album) {
+    public Album addNew(@RequestBody Album album) {
+
         return albumService.newAlbum(album);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping("/deleteOne")
+    public void delete(@RequestParam Integer albumId) {
+        logger.info("delete album");
+        albumService.deleteAlbum(albumId);
+    }
+
     @GetMapping("/getAll")
-    public Iterable<AlbumDto> loadAllAlbums() {
+    public Iterable<AlbumDto> loadAll() {
 
         Iterable<Album> albums=albumRepository.findAll();
         List<AlbumDto> returnList = new ArrayList<>();

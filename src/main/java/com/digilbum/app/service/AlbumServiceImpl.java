@@ -48,6 +48,7 @@ public class AlbumServiceImpl implements IAlbumService {
     public List<AlbumDto> loadDtosForUser(Integer userId){
        return albumRepository.findDtoByUserId(userId);
     }
+
     @Override
     public Album newAlbum(Album newAlbum) {
 
@@ -55,6 +56,11 @@ public class AlbumServiceImpl implements IAlbumService {
         );
         user.ifPresent(newAlbum::setUser);
         return albumRepository.save(newAlbum);
+    }
+
+    @Override
+    public void deleteAlbum(Integer albumId) {
+        albumRepository.deleteById(albumId);
     }
 
 }

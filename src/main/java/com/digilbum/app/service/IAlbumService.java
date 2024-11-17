@@ -15,4 +15,5 @@ public interface IAlbumService {
 
     public Album newAlbum(Album newAlbum);
 
+    void deleteAlbum(Integer albumId);
 }
