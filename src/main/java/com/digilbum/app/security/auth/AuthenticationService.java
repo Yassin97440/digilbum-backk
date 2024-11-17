@@ -1,7 +1,6 @@
 package com.digilbum.app.security.auth;
 
 
-import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.security.config.JwtService;
 import com.digilbum.app.security.token.Token;
 import com.digilbum.app.security.token.TokenRepository;
@@ -26,20 +25,30 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final GroupService groupService;
+  private final AuthorizationService authorizationService;
 
   public AuthenticationResponse register(RegisterRequest request) {
 
-     UserRegisterRequest userRequest = request.user();
+    UserRegisterRequest userRequest = request.user();
     User user = User.builder()
         .firstname(userRequest.getFirstname())
         .lastname(userRequest.getLastname())
         .email(userRequest.getEmail())
         .password(passwordEncoder.encode(userRequest.getPassword()))
         .build();
-    User savedUser = repository.save(user);
-    GroupDto newGroup = groupService.create(request.group(), savedUser);
 
-    var jwtToken = jwtService.generateToken(user);
+    authorizationService.giveUserBasicRole(user);
+    User savedUser = repository.save(user);
+
+    authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                user.getEmail(),
+                userRequest.getPassword(), user.getAuthorities()
+            )
+        );
+    groupService.create(request.group(), savedUser);
+
+    String jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
         .token(jwtToken)
