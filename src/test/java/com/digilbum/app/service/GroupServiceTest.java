@@ -2,7 +2,6 @@ package com.digilbum.app.service;
 
 import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.models.GroupType;
-import com.digilbum.app.security.user.Role;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
 import org.assertj.core.api.Assertions;
@@ -14,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.Instant;
 
 @SpringBootTest
-public class GroupServiceTest {
+class GroupServiceTest {
 
     @Autowired
     GroupService groupService;
@@ -29,11 +28,11 @@ public class GroupServiceTest {
                 .firstname("Yassin")
                 .lastname("Abdulla")
                 .email("yassinabdulla7@gmail.com")
-                .role(Role.USER).build();
+                .build();
     }
 
     @Test
-    public void create() {
+    void create() {
         GroupDto result = groupService.create(
                 new GroupDto(
                         null,
