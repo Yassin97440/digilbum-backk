@@ -14,7 +14,8 @@ public class AuthorizationService {
     RoleRepository roleRepository;
 
     public void giveUserBasicRole(User user) {
-        Role role = roleRepository.findById("USER").orElseThrow(() -> new RoleNotFoundException("Basic role not found"));
+        Role role = roleRepository.findById("ROLE_USER").
+                orElseThrow(() -> new RoleNotFoundException("Basic role not found"));
         user.getAuthorities().add(role);
     }
 }
