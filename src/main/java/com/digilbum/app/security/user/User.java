@@ -39,9 +39,11 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
+  @Setter
   @ManyToMany(fetch = FetchType.EAGER)
-  private final List<Role> roles = new ArrayList<>();
+  private List<Role> roles = new ArrayList<>();
 
+  @Override
   public Collection<Role> getAuthorities() {
     return roles;
   }
