@@ -21,21 +21,14 @@ public class AlbumController {
 
     Logger logger = Logger.getLogger(getClass().getName());
 
-    AlbumRepository albumRepository;
-    UserRepository userRepository;
     IAlbumService albumService;
 
-    public AlbumController(AlbumRepository albumRepository,
-                           UserRepository userRepository,
-                           IAlbumService albumController) {
-        this.albumRepository = albumRepository;
-        this.userRepository = userRepository;
+    public AlbumController(IAlbumService albumController) {
         this.albumService = albumController;
     }
 
     @PostMapping("/new")
     public Album addNew(@RequestBody Album album) {
-
         return albumService.newAlbum(album);
     }
 
@@ -48,14 +41,10 @@ public class AlbumController {
 
     @GetMapping("/getAll")
     public Iterable<AlbumDto> loadAll() {
-
-        Iterable<Album> albums=albumRepository.findAll();
-        List<AlbumDto> returnList = new ArrayList<>();
-        for (Album album : albums){
-            returnList.add(new AlbumDto(album.getId(), album.getName()));
-        }
-        return returnList;
+        return albumService.getDtos();
     }
+
+
 
     @GetMapping("/albumsWithPictures")
     public ResponseEntity<Iterable<Album>> loadAlbumsWithPictures() {

@@ -1,5 +1,6 @@
 package com.digilbum.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,15 @@ public class AlbumServiceImpl implements IAlbumService {
         return pictureController.addWebPathForPictures(albums);
     }
 
+    @Override
+    public List<AlbumDto> getDtos() {
+        Iterable<Album> albums=albumRepository.findAll();
+        List<AlbumDto> returnList = new ArrayList<>();
+        for (Album album : albums){
+            returnList.add(new AlbumDto(album.getId(), album.getName()));
+        }
+        return returnList;
+    }
 
     @Override
     public List<AlbumDto> loadDtosForUser(Integer userId){
