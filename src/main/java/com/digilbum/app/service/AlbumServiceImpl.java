@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.digilbum.app.dto.AlbumDto;
+import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
 import org.springframework.stereotype.Controller;
@@ -49,7 +50,9 @@ public class AlbumServiceImpl implements IAlbumService {
         Iterable<Album> albums=albumRepository.findAll();
         List<AlbumDto> returnList = new ArrayList<>();
         for (Album album : albums){
-            returnList.add(new AlbumDto(album.getId(), album.getName()));
+            returnList.add(
+                    toDto(album)
+            );
         }
         return returnList;
     }
@@ -73,4 +76,18 @@ public class AlbumServiceImpl implements IAlbumService {
         albumRepository.deleteById(albumId);
     }
 
+    private AlbumDto toDto(Album album)
+    {
+        String coverPicPath ="";
+        Optional<Picture> pic = album.getPictures().stream().findFirst();
+        if (pic.isPresent()) {
+            coverPicPath = pic.get().getPathFile();
+        }
+        return new AlbumDto(
+                album.getId(),
+                album.getName(),
+                coverPicPath
+        );
+
+    };
 }
