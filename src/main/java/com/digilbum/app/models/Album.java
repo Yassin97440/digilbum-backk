@@ -40,7 +40,7 @@ public class Album {
     @JoinColumn(nullable = true)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "album")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "album")
     @JsonManagedReference
     private Set<Picture> pictures = new LinkedHashSet<>();
 
