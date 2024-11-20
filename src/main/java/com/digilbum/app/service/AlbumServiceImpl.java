@@ -19,16 +19,16 @@ public class AlbumServiceImpl implements IAlbumService {
 
     private final AlbumRepository albumRepository;
 
-    private final IPictureService pictureController;
+    private final IPictureService pictureService;
 
     private final UserRepository userRepository;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-                            IPictureService pictureController,
+                            IPictureService pictureService,
                             UserRepository userRepository
     ) {
         this.albumRepository = albumRepository;
-        this.pictureController = pictureController;
+        this.pictureService = pictureService;
         this.userRepository = userRepository;
     }
 
@@ -36,13 +36,7 @@ public class AlbumServiceImpl implements IAlbumService {
     public Iterable<Album> loadAlbumsWithPictures() {
 
         List<Album> albums = albumRepository.findAll();
-        return pictureController.addWebPathForPictures(albums);
-    }
-
-    @Override
-    public Iterable<Album> loadAlbumsWithPicturesForUser(Integer userId) {
-        List<Album> albums = albumRepository.findByUserId(userId);
-        return pictureController.addWebPathForPictures(albums);
+        return pictureService.addWebPathForPictures(albums);
     }
 
     @Override

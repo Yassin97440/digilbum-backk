@@ -1,6 +1,5 @@
 package com.digilbum.app.service;
 
-import com.digilbum.app.dao.IPictureDao;
 import com.digilbum.app.dto.PictureDto;
 import com.digilbum.app.models.Album;
 import com.digilbum.app.models.Picture;
@@ -9,7 +8,7 @@ import com.digilbum.app.repositorys.PictureRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,73 +20,65 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Controller
 public class PictureServiceImpl implements IPictureService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final String folderPath = "/pictures/";
-    // private final String folderPath = "digilbum/";
-    private final String BASE_PATH = System.getProperty("user.home") + folderPath;
+    private final String FOLDER_PATH;
+    private final String BASE_PATH;
 
-    private final String WEB_PATH = "http://159.89.0.150/images/";
-    // private final String BASE_PATH = "C:/Users/yassi/Pictures/" + folderPath;
+    private final String WEB_PATH;
 
-    @Autowired
-    PictureRepository pictureRepository;
+    private final PictureRepository pictureRepository;
 
-    @Autowired
-    IPictureDao pictureDao;
-    @Autowired
-    private AlbumRepository albumRepository;
 
-    @Override
-    public void deletePictureFile(Picture picture) {
-        pictureRepository.delete(picture);
-    }
-
-    private String getTypePictureFile(String originalFileName) {
-        String[] nameSpleted = originalFileName.split("\\.");
-        return nameSpleted[1];
+    private final AlbumRepository albumRepository;
+    public PictureServiceImpl(
+            PictureRepository pictureRepository,
+            AlbumRepository albumRepository,
+            @Value("${pictures.server.url}")
+            String hostPictureServer,
+            @Value("${pictures.folder.path}")
+            String folderPath) {
+        this.pictureRepository = pictureRepository;
+        this.albumRepository = albumRepository;
+        this.FOLDER_PATH = folderPath;
+        this.BASE_PATH = System.getProperty("user.home") + this.FOLDER_PATH;
+        this.WEB_PATH = hostPictureServer;
     }
 
     @Override
-    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) {
+    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException {
         logger.info("call : writeAndSavePictures");
 
-        Album album =  albumRepository.findById(albumId).get();
-        List<Picture> newPictures = new ArrayList<>();
-        FileOutputStream fileOutputStream = null;
-        String fileName = null;
-        File picfile = null;
-        try {
-            for (MultipartFile pic : pictures) {
-                fileName = generatePicturePathFile( album , pic);
-                Path path = Paths.get(BASE_PATH, fileName);
-                // on créer u nouveau fichier
-                picfile = path.toFile();
-                if (!picfile.createNewFile()) {
-                    throw new IOException("Can't create new file for pictures"+path.toString());
-                }
-                // on créer un output stream pour écrire le nouveau fichier
-                fileOutputStream = new FileOutputStream(picfile);
-                // on donne le contenu de ce qu'on a recu
-                fileOutputStream.write(pic.getBytes());
-                fileOutputStream.close();
-                // on sauvarde la photo en bdd
+        AtomicReference<Album> album = new AtomicReference<>();
+        albumRepository.findById(albumId).ifPresent(album::set);
 
+        List<Picture> newPictures = new ArrayList<>();
+
+            for (MultipartFile pic : pictures) {
+                String fileName = generatePictureName(album.get(), pic.getOriginalFilename());
+                Path path = Paths.get(BASE_PATH, fileName);
+
+                File picfile = path.toFile();
+                if (!picfile.createNewFile()) {
+                    throw new IOException("Can't create new file for pictures for this file name"+ fileName);
+                }
+
+                try ( FileOutputStream fileOutputStream = new FileOutputStream(picfile)) {
+                    fileOutputStream.write(pic.getBytes());
+                }
                 Picture newPic = new Picture();
-                newPic.setAlbum(album);
-                newPic.setPathFile(fileName); // folderPath + "/" + fileName
+                newPic.setAlbum(album.get());
+                newPic.setPathFile(fileName);
                 newPictures.add(newPic);
                 pictureRepository.save(newPic);
             }
             return newPictures;
-        } catch (Exception e) {
-            logger.error("erreur pour photos de cette album : " + album.toString(), e);
-        }
-        return new ArrayList<>();
     }
 
     /**
@@ -98,15 +89,21 @@ public class PictureServiceImpl implements IPictureService {
      * puis plus tard :
      * PATH/pictures/familly/event/album/pictureName
      */
-    private String generatePicturePathFile(Album album, MultipartFile pic) {
-        return album.getName().replaceAll(" ", "") + Calendar.getInstance().getTimeInMillis() + "."
-                + getTypePictureFile(pic.getOriginalFilename());
+    private String generatePictureName(Album album, String pictureOriginalFilename) throws NullPointerException {
+        StringBuilder pictuteNameBuilder = new StringBuilder();
+        pictuteNameBuilder.append(album.getName().replace(" ", ""))
+                .append(Calendar.getInstance().getTimeInMillis())
+                .append( ".")
+                .append(getTypePictureFile(Objects.requireNonNull(pictureOriginalFilename)))
+        ;
+        return pictuteNameBuilder.toString() ;
     }
 
-    @Override
-    public List<Picture> loadPicturesForAlbum(Album album) {
-        return pictureRepository.findByAlbum(album);
+    private String getTypePictureFile(String originalFileName) {
+        String[] pictureType = originalFileName.split("\\.");
+        return pictureType[1];
     }
+
 
     @Override
     public List<Album> addWebPathForPictures(List<Album> albums) {
@@ -126,7 +123,7 @@ public class PictureServiceImpl implements IPictureService {
     }
 
 
-    public List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
+    private List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
         final List<PictureDto> finalDto = new ArrayList<>();
             for (Picture picture : pictures) {
                 finalDto.add( new PictureDto(
