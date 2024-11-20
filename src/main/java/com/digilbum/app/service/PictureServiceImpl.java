@@ -50,9 +50,15 @@ public class PictureServiceImpl implements IPictureService {
         this.BASE_PATH = System.getProperty("user.home") + this.FOLDER_PATH;
         this.WEB_PATH = hostPictureServer;
     }
+    @Override
+    public List<PictureDto> loadPicturesForAlbum(Integer albumId) {
+        return addWebPathForPicturesDto(
+                pictureRepository.findByAlbumId(albumId)
+        );
+    }
 
     @Override
-    public List<Picture> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException {
+    public List<PictureDto> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException {
         logger.info("call : writeAndSavePictures");
 
         AtomicReference<Album> album = new AtomicReference<>();
@@ -66,7 +72,7 @@ public class PictureServiceImpl implements IPictureService {
 
                 File picfile = path.toFile();
                 if (!picfile.createNewFile()) {
-                    throw new IOException("Can't create new file for pictures for this file name"+ fileName);
+                    throw new IOException("file already exist"+ fileName);
                 }
 
                 try ( FileOutputStream fileOutputStream = new FileOutputStream(picfile)) {
@@ -78,7 +84,12 @@ public class PictureServiceImpl implements IPictureService {
                 newPictures.add(newPic);
                 pictureRepository.save(newPic);
             }
-            return newPictures;
+
+            return newPictures.stream().map(this::toDto).toList();
+    }
+
+    private PictureDto toDto(Picture picture) {
+        return new PictureDto(picture.getId(), picture.getPathFile(), picture.getAlbum().getId());
     }
 
     /**
@@ -114,14 +125,6 @@ public class PictureServiceImpl implements IPictureService {
         }
         return albums;
     }
-
-    @Override
-    public List<PictureDto> loadPicturesForAlbum(Integer albumId) {
-        return addWebPathForPicturesDto(
-                pictureRepository.findByAlbumId(albumId)
-        );
-    }
-
 
     private List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
         final List<PictureDto> finalDto = new ArrayList<>();

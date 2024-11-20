@@ -1,42 +1,49 @@
 package com.digilbum.app.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+
 import com.digilbum.app.dto.PictureDto;
-import org.springframework.beans.factory.annotation.Autowired;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.digilbum.app.service.IPictureService;
-import com.digilbum.app.dao.AlbumDao;
-import com.digilbum.app.models.Picture;
 
 
 @RestController
 @RequestMapping("/api/v2/pictures")
 public class PictureController {
 
-    public final String BASE_PATH = "file:///C:/Users/yassi/";
+    Logger logger =  LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    IPictureService pictureService;
+    private final IPictureService pictureService;
 
-    @Autowired
-    AlbumDao albumDao;
-
-    public List<Picture> loadAllPicturesForAlbum() {
-        return null;
+    public PictureController(IPictureService pictureService) {
+        this.pictureService = pictureService;
     }
 
-    @PostMapping(path = "/writeAndSavePictures") //, consumes = { MediaType.MULTIPART_FORM_DATA_VALUE}
-    public void writeAndSavePictures(
-            @RequestPart("pictures") List<MultipartFile> pictures,
-            @RequestParam String albumId)
-    {
 
-        System.out.println("call postMethodMultidata");
-        pictureService.writeAndSavePictures(pictures, Integer.parseInt(albumId));
-        System.out.println("end postMethodMultidata");
+    @PostMapping(path = "/writeAndSavePictures")
+    ResponseEntity<List<PictureDto>>writeAndSavePictures(
+            @RequestPart("pictures") List<MultipartFile> pictures,
+            @RequestParam String albumId)  {
+
+        try {
+            return new ResponseEntity<>(
+                    pictureService.writeAndSavePictures(pictures, Integer.parseInt(albumId)),
+                    HttpStatus.OK
+            );
+        } catch (IOException e) {
+            logger.error("Failed to write pictures for this album : "+albumId, e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
     }
     @GetMapping("/findForAlbum")
