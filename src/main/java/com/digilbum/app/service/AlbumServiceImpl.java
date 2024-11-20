@@ -8,6 +8,7 @@ import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 
 import com.digilbum.app.models.Album;
@@ -15,21 +16,26 @@ import com.digilbum.app.repositorys.AlbumRepository;
 
 @Controller
 public class AlbumServiceImpl implements IAlbumService {
-
-
+    
     private final AlbumRepository albumRepository;
-
     private final IPictureService pictureService;
-
     private final UserRepository userRepository;
+    private final String picturesHost;
+    private final String picturesFolders;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
                             IPictureService pictureService,
-                            UserRepository userRepository
+                            UserRepository userRepository,
+                            @Value("${pictures.server.url}")
+                            String picturesHost,
+                            @Value("${pictures.folder.path}")
+                            String picturesFolders
     ) {
         this.albumRepository = albumRepository;
         this.pictureService = pictureService;
         this.userRepository = userRepository;
+        this.picturesHost = picturesHost;
+        this.picturesFolders = picturesFolders;
     }
 
     @Override
@@ -76,6 +82,7 @@ public class AlbumServiceImpl implements IAlbumService {
         Optional<Picture> pic = album.getPictures().stream().findFirst();
         if (pic.isPresent()) {
             coverPicPath = pic.get().getPathFile();
+            coverPicPath = picturesHost + picturesFolders + coverPicPath;
         }
         return new AlbumDto(
                 album.getId(),
@@ -83,5 +90,5 @@ public class AlbumServiceImpl implements IAlbumService {
                 coverPicPath
         );
 
-    };
+    }
 }
