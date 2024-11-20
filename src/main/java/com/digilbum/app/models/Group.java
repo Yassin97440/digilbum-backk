@@ -15,7 +15,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name= "`group`")
+@Table(name= "`groups`")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
