@@ -50,14 +50,18 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          # Arrêter l'ancien processus si nécessaire
-          sudo -n systemctl stop digilbum-back.service || true
-          
-          # Déplacer le nouveau JAR
+          # Créer un script temporaire avec les commandes
+          echo '#!/bin/bash
+          systemctl stop digilbum-back.service
           mv /home/digilbum/app/back/target/*.jar /home/digilbum/app/back/app.jar
+          chmod +x /path/to/your/app/directory/app.jar
+          systemctl start digilbum-back.service' > /tmp/deploy.sh
           
-          # Définir les permissions
-          sudo -n chmod +x /home/digilbum/app/back/app.jar
+          # Rendre le script exécutable
+          chmod +x /tmp/deploy.sh
           
-          # Redémarrer le service
-          sudo -n /bin/systemctl start digilbum-back
+          # Exécuter avec sudo sans besoin de mot de passe
+          sudo /tmp/deploy.sh
+          
+          # Nettoyer
+          rm /tmp/deploy.sh
