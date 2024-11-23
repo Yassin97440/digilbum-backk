@@ -51,7 +51,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           # Arrêter l'ancien processus si nécessaire
-          sudo /bin/systemctl stop digilbum-back || true
+          sudo -n systemctl stop digilbum-back.service || true
           
           # Déplacer le nouveau JAR
           mv /home/digilbum/app/back/target/*.jar /home/digilbum/app/back/app.jar
@@ -60,4 +60,4 @@ jobs:
           chmod +x /home/digilbum/app/back/app.jar
           
           # Redémarrer le service
-          sudo /bin/systemctl start digilbum-back
+          sudo -n /bin/systemctl start digilbum-back
