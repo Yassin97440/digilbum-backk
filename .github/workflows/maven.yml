@@ -57,7 +57,7 @@ jobs:
           mv /home/digilbum/app/back/target/*.jar /home/digilbum/app/back/app.jar
           
           # Définir les permissions
-          chmod +x /home/digilbum/app/back/app.jar
+          sudo -n chmod +x /home/digilbum/app/back/app.jar
           
           # Redémarrer le service
           sudo -n /bin/systemctl start digilbum-back
