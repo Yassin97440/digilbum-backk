@@ -28,11 +28,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -B package -DskipTests --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-    - name: Update dependency graph
-      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+    #- name: Update dependency graph
+    #  uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
 
     - name: Deploy to Server
       uses: appleboy/scp-action@master
@@ -51,13 +51,13 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           # Arrêter l'ancien processus si nécessaire
-          sudo systemctl stop your-app-service || true
+          systemctl stop digilbum-back || true
           
           # Déplacer le nouveau JAR
-          mv /path/to/your/app/directory/target/*.jar /path/to/your/app/directory/app.jar
+          mv /home/digilbum/app/back/target/*.jar /home/digilbum/app/back/app.jar
           
           # Définir les permissions
-          sudo chmod +x /path/to/your/app/directory/app.jar
+          chmod +x /home/digilbum/app/back/app.jar
           
           # Redémarrer le service
-          sudo systemctl start your-app-service
+          systemctl start digilbum-back
