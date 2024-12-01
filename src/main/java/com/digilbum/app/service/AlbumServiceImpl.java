@@ -38,12 +38,6 @@ public class AlbumServiceImpl implements IAlbumService {
         this.picturesFolders = picturesFolders;
     }
 
-    @Override
-    public Iterable<Album> loadAlbumsWithPictures() {
-
-        List<Album> albums = albumRepository.findAll();
-        return pictureService.addWebPathForPictures(albums);
-    }
 
     @Override
     public List<AlbumDto> getDtos() {

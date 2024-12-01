@@ -50,6 +50,7 @@ public class PictureServiceImpl implements IPictureService {
         this.BASE_PATH = System.getProperty("user.home") + this.FOLDER_PATH;
         this.WEB_PATH = hostPictureServer;
     }
+
     @Override
     public List<PictureDto> loadPicturesForAlbum(Integer albumId) {
         return addWebPathForPicturesDto(
@@ -115,23 +116,12 @@ public class PictureServiceImpl implements IPictureService {
         return pictureType[1];
     }
 
-
-    @Override
-    public List<Album> addWebPathForPictures(List<Album> albums) {
-        for (Album album : albums) {
-            for (Picture picture : album.getPictures()) {
-                picture.setPathFile(WEB_PATH +FOLDER_PATH+ picture.getPathFile());
-            }
-        }
-        return albums;
-    }
-
     private List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
         final List<PictureDto> finalDto = new ArrayList<>();
             for (Picture picture : pictures) {
                 finalDto.add( new PictureDto(
                         picture.getId(),
-                        WEB_PATH + picture.getPathFile(),
+                        WEB_PATH +FOLDER_PATH+ picture.getPathFile(),
                         picture.getAlbum().getId()));
             }
         return finalDto;

@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface IAlbumService {
 
-    public Iterable<Album> loadAlbumsWithPictures();
 
     List<AlbumDto> getDtos();
 

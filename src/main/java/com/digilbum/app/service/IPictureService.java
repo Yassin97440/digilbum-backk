@@ -12,8 +12,6 @@ public interface IPictureService {
 
     List<PictureDto> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException;
 
-    List<Album> addWebPathForPictures(List<Album> albums);
-
     List<PictureDto> loadPicturesForAlbum(Integer albumId);
 
 }
