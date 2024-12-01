@@ -3,16 +3,9 @@ package com.digilbum.app.controller;
 import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.service.IAlbumService;
 import com.digilbum.app.models.Album;
-import com.digilbum.app.repositorys.AlbumRepository;
-
-import com.digilbum.app.security.user.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
