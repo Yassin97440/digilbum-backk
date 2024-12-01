@@ -120,7 +120,7 @@ public class PictureServiceImpl implements IPictureService {
     public List<Album> addWebPathForPictures(List<Album> albums) {
         for (Album album : albums) {
             for (Picture picture : album.getPictures()) {
-                picture.setPathFile(WEB_PATH + picture.getPathFile());
+                picture.setPathFile(WEB_PATH +FOLDER_PATH+ picture.getPathFile());
             }
         }
         return albums;
