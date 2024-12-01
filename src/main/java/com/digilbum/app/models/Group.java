@@ -15,7 +15,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name= "`groups`")
+@Table(name= "`group`")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +27,15 @@ public class Group {
     @Column( nullable = false)
     private GroupType type;
 
-    @ColumnDefault("not specified")
+    @ColumnDefault("'not specified'")
     @Column( nullable = false, length = 150)
     private String name;
 
     @CreatedDate
     private Instant createdAt;
 
-    @CreatedBy()
+    @CreatedBy
+    @ManyToOne
     private User createdBy;
 
     @Column( nullable = false, length = 250, unique = true)

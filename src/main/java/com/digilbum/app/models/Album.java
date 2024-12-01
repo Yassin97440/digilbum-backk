@@ -30,6 +30,10 @@ public class Album {
     @Column(nullable = false, length = 50)
     private String name;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "event_id")
+    private Event event;
+
     @Column( nullable = false)
     private LocalDate startDate;
 
@@ -43,6 +47,14 @@ public class Album {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "album")
     @JsonManagedReference
     private Set<Picture> pictures = new LinkedHashSet<>();
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     public Set<Picture> getPictures() {
         return pictures;
