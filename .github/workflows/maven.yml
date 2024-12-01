@@ -53,7 +53,7 @@ jobs:
           # Créer un script temporaire avec les commandes
           echo '#!/bin/bash
           sudo systemctl stop digilbum-back.service
-          mv /home/digilbum/app/back/target/*.jar /home/digilbum/app/back/app.jar
+          mv ~/app/back/target/*.jar ~/app/back/app.jar
           chmod +x /home/digilbum/app/back/app.jar
           sudo systemctl start digilbum-back.service' > /tmp/deploy.sh
           
