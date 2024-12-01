@@ -9,5 +9,5 @@ import java.time.LocalDate;
  * DTO for {@link com.digilbum.app.models.Event}
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record EventDto(Integer id, String name, LocalDate starteddAt, LocalDate endedAt) implements Serializable {
+public record EventDto(Integer id, String name, LocalDate startedAt, LocalDate endedAt) implements Serializable {
 }
