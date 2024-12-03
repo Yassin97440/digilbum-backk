@@ -14,4 +14,5 @@ public interface IPictureService {
 
     List<PictureDto> loadPicturesForAlbum(Integer albumId);
 
+    void deletePictures(Album album);
 }

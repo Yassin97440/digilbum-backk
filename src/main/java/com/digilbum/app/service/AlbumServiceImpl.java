@@ -67,7 +67,9 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public void deleteAlbum(Integer albumId) {
-        albumRepository.deleteById(albumId);
+        Album album = albumRepository.findById(albumId).get();
+        pictureService.deletePictures(album);
+        albumRepository.delete(album);
     }
 
     private AlbumDto toDto(Album album)
@@ -85,4 +87,6 @@ public class AlbumServiceImpl implements IAlbumService {
         );
 
     }
+
+
 }

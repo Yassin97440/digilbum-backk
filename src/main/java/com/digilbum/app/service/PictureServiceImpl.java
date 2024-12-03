@@ -9,7 +9,7 @@ import com.digilbum.app.repositorys.PictureRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Controller
+@Service
 public class PictureServiceImpl implements IPictureService {
 
     Logger logger = LoggerFactory.getLogger(getClass());
@@ -125,5 +125,10 @@ public class PictureServiceImpl implements IPictureService {
                         picture.getAlbum().getId()));
             }
         return finalDto;
+    }
+
+    @Override
+    public void deletePictures(Album album) {
+        pictureRepository.deleteAll(album.getPictures());
     }
 }
