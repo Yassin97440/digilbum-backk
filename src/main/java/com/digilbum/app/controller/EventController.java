@@ -1,14 +1,12 @@
 package com.digilbum.app.controller;
 
 import com.digilbum.app.dto.EventDto;
+import com.digilbum.app.models.Event;
 import com.digilbum.app.service.EventService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public class EventController {
 
 
     @PostMapping("/")
-    EventDto create(EventDto newEvent) {
+        EventDto create(@RequestBody EventDto newEvent) {
         return eventService.create(newEvent);
     }
 
