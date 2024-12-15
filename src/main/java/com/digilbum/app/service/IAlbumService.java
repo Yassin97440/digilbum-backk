@@ -12,7 +12,7 @@ public interface IAlbumService {
 
     List<AlbumDto> loadDtosForUser(Integer userId);
 
-    public Album newAlbum(Album newAlbum);
+    public Album newAlbum(AlbumDto newAlbum);
 
     void deleteAlbum(Integer albumId);
 }

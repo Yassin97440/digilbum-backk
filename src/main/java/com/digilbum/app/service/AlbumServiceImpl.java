@@ -57,8 +57,8 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Album newAlbum(Album newAlbum) {
-
+    public Album newAlbum(AlbumDto newAlbumDto) {
+        Album newAlbum = toEntity(newAlbumDto);
         Optional<User> user = userRepository.findById(1
         );
         user.ifPresent(newAlbum::setUser);
@@ -83,9 +83,19 @@ public class AlbumServiceImpl implements IAlbumService {
         return new AlbumDto(
                 album.getId(),
                 album.getName(),
-                coverPicPath
+                coverPicPath,
+                album.getStartDate(),
+                album.getEndDate()
         );
 
+    }
+
+    private Album toEntity(AlbumDto albumDto){
+        Album album = new Album();
+        album.setName(albumDto.name());
+        album.setStartDate(albumDto.startedAt());
+        album.setEndDate(albumDto.endedAt());
+        return album;
     }
 
 

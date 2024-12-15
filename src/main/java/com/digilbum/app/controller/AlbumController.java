@@ -21,7 +21,7 @@ public class AlbumController {
     }
 
     @PostMapping("/new")
-    public Album addNew(@RequestBody Album album) {
+    public Album addNew(@RequestBody AlbumDto album) {
         return albumService.newAlbum(album);
     }
 

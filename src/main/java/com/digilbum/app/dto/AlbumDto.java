@@ -1,6 +1,6 @@
 package com.digilbum.app.dto;
 
-import java.util.Set;
+import java.time.LocalDate;
 
-public record AlbumDto(Integer id, String name, String coverImagePath) {
+public record AlbumDto(Integer id, String name, String coverImagePath, LocalDate startedAt, LocalDate endedAt) {
 }
