@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorizationService {
 
-    RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
     public void giveUserBasicRole(User user) {
         Role role = roleRepository.findById("ROLE_USER").
