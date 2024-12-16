@@ -1,7 +1,6 @@
 package com.digilbum.app.controller;
 
 import com.digilbum.app.dto.EventDto;
-import com.digilbum.app.models.Event;
 import com.digilbum.app.service.EventService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
