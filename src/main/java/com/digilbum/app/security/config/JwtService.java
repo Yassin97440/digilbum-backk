@@ -1,5 +1,6 @@
 package com.digilbum.app.security.config;
 
+import com.digilbum.app.security.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +30,14 @@ public class JwtService {
   }
 
   public String generateToken(UserDetails userDetails) {
-    return generateToken(new HashMap<>(), userDetails);
+    User user = (User) userDetails;
+
+    HashMap<String, Object> claims = new HashMap<>();
+    claims.put("firstname", user.getFirstname());
+    claims.put("lastname", user.getLastname());
+    claims.put("email", user.getEmail());
+
+    return generateToken(claims, userDetails);
   }
 
   public String generateToken(
@@ -37,13 +45,13 @@ public class JwtService {
       UserDetails userDetails
   ) {
     return Jwts
-        .builder()
-        .setClaims(extraClaims)
-        .setSubject(userDetails.getUsername())
-        .setIssuedAt(new Date(System.currentTimeMillis()))
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 70))
-        .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-        .compact();
+            .builder()
+            .setClaims(extraClaims)  // Ajoutez d'abord les claims supplémentaires
+            .setSubject(userDetails.getUsername())
+            .setIssuedAt(new Date(System.currentTimeMillis()))
+            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 70))
+            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+            .compact();
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {
