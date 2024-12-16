@@ -4,7 +4,7 @@ WORKDIR /app
  
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-RUN sudo ./mvnw dependency:resolve
+RUN ./mvnw dependency:resolve
  
 COPY src ./src
  
