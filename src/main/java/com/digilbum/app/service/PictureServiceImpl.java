@@ -69,6 +69,7 @@ public class PictureServiceImpl implements IPictureService {
 
             for (MultipartFile pic : pictures) {
                 String fileName = generatePictureName(album.get(), pic.getOriginalFilename());
+                logger.info("BASE_PATH : " + BASE_PATH);
                 Path path = Paths.get(BASE_PATH, fileName);
 
                 File picfile = path.toFile();
