@@ -37,4 +37,4 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             docker load < ~/app/back/digilbum-back.tar.gz
-            docker run -d -p 8080:8080  -v ~/pictures:home/digilbum/pictures digilbum-back:${{ github.run_number }}
+            docker run -d -p 8080:8080  -v ~/pictures:/home/digilbum/pictures digilbum-back:${{ github.run_number }}
