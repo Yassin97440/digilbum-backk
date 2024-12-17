@@ -9,6 +9,8 @@ import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 
 import com.digilbum.app.models.Album;
@@ -52,8 +54,10 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<AlbumDto> loadDtosForUser(Integer userId){
-       return albumRepository.findDtoByUserId(userId);
+    public List<AlbumDto> loadDtosForOwner(){
+        Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authUser.getPrincipal();
+       return albumRepository.findDtoByUserId(user.getId());
     }
 
     @Override
@@ -97,6 +101,7 @@ public class AlbumServiceImpl implements IAlbumService {
         album.setEndDate(albumDto.endedAt());
         return album;
     }
+
 
 
 }

@@ -10,8 +10,8 @@ import java.util.List;
 
 public interface AlbumRepository extends JpaRepository<Album, Integer> {
 
-    @Query("SELECT new com.digilbum.app.dto.AlbumDto(a.id, a.name)" +
-            "FROM Album  a WHERE a.user.id = ?1")
+    @Query("SELECT new com.digilbum.app.dto.AlbumDto(a.id, a.name, null,a.startDate, a.endDate)" +
+            "FROM Album  a where a.user.id = ?1")
     List<AlbumDto> findDtoByUserId(Integer userId);
 
     List<Album> findByUserId(Integer userId);

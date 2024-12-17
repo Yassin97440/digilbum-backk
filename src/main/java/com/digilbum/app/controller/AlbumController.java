@@ -6,6 +6,7 @@ import com.digilbum.app.models.Album;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -37,7 +38,10 @@ public class AlbumController {
         return albumService.getDtos();
     }
 
-
+    @GetMapping("/forOwner")
+    public List<AlbumDto> loadForOwner() {
+        return albumService.loadDtosForOwner();
+    }
 
 
 }

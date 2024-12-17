@@ -10,7 +10,7 @@ public interface IAlbumService {
 
     List<AlbumDto> getDtos();
 
-    List<AlbumDto> loadDtosForUser(Integer userId);
+    List<AlbumDto> loadDtosForOwner();
 
     public Album newAlbum(AlbumDto newAlbum);
 
