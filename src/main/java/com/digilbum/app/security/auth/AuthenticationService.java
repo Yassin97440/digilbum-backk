@@ -48,7 +48,14 @@ public class AuthenticationService {
                 userRequest.getPassword(), user.getAuthorities()
             )
         );
-    groupService.create(request.group(), savedUser);
+
+    if (request.group().id()==null){
+      groupService.create(request.group(), savedUser);
+    }
+    else {
+      groupService.addMember(savedUser, groupService.toEntity(
+              request.group()));
+    }
 
     String jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
