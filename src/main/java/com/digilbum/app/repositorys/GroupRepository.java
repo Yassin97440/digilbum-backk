@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GroupRepository extends JpaRepository<Group, Integer> {
     public Group findByJoinCode(String joinCode);
+
+    boolean existsByJoinCode(String joinCode);
 }

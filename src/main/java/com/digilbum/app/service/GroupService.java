@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Random;
 
 @AllArgsConstructor
 @Service
@@ -23,8 +24,8 @@ public class GroupService {
 
         return groupRepository.save(
                         Group.builder()
-                                .name(groupToSave.name())
-                                .type(groupToSave.type())
+                                .name(groupToSave.groupName())
+                                .type(groupToSave.groupType())
                                 .build()
                     )
         ;
@@ -32,8 +33,8 @@ public class GroupService {
 
     public GroupDto create(GroupDto groupToCreate, User creator){
         Group group = Group.builder()
-                .name(groupToCreate.name())
-                .type(groupToCreate.type())
+                .name(groupToCreate.groupName())
+                .type(groupToCreate.groupType())
                 .joinCode(generateJoinCode())
                 .build();
         final Group gr = groupRepository.save(group);
@@ -48,6 +49,11 @@ public class GroupService {
 
     public GroupDto addMember(String joinCode, User newMember) {
         Group group = findByJoinCode(joinCode);
+        return addMember(newMember, group);
+
+    }
+
+    public GroupDto addMember(User newMember, Group group) {
         createAssociation(newMember, group, false);
 
         return toDto(
@@ -55,7 +61,6 @@ public class GroupService {
                         createAssociation(newMember, group, false)
                 ).getGroup()
         );
-
     }
 
     private UserGroupMapping createAssociation(User user, Group gr, boolean admin) {
@@ -73,8 +78,19 @@ public class GroupService {
     }
 
     public String generateJoinCode(){
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder joinCode = new StringBuilder();
+        Random random = new Random();
+        int codeLength = 8;
 
-        return "YOUPI786";
+        do {
+            joinCode.setLength(0);
+            for (int i = 0; i < codeLength; i++) {
+                joinCode.append(characters.charAt(random.nextInt(characters.length())));
+            }
+        } while (groupRepository.existsByJoinCode(joinCode.toString()));
+
+        return joinCode.toString();
     }
     public GroupDto toDto(Group group){
         return new GroupDto(
@@ -84,5 +100,14 @@ public class GroupService {
                 group.getCreatedAt(),
                 group.getJoinCode()
         );
+    }
+
+    public Group toEntity(GroupDto dto) {
+        return Group.builder()
+               .id(dto.id())
+               .name(dto.groupName())
+               .type(dto.groupType())
+               .joinCode(dto.joinCode())
+               .build();
     }
 }

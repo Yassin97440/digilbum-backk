@@ -25,8 +25,8 @@ class GroupServiceTest {
     static void createUserTest(){
         userTest = User.builder()
                 .id(7)
-                .firstname("Yassin")
-                .lastname("Abdulla")
+                .firstname("john")
+                .lastname("doe")
                 .email("yassinabdulla7@gmail.com")
                 .build();
     }
@@ -37,15 +37,35 @@ class GroupServiceTest {
                 new GroupDto(
                         null,
                         GroupType.Familly,
-                        "THE TEST",
+                        "TEST UNIT",
                         Instant.now(),
-                        null
+                        groupService.generateJoinCode()
                 ),
                 userTest
         );
 
         Assertions.assertThat(result.id()).isNotNull();
-        Assertions.assertThat(result.type()).isEqualTo(GroupType.Familly);
+        Assertions.assertThat(result.groupType()).isEqualTo(GroupType.Familly);
         Assertions.assertThat(result.joinCode()).isNotNull();
     }
+
+@Test
+void generateJoinCode_shouldGenerateCodeWithLengthOf8() {
+    String joinCode = groupService.generateJoinCode();
+    
+    Assertions.assertThat(joinCode).hasSize(8);
+    Assertions.assertThat(joinCode).matches("[A-Z0-9]{8}");
+}
+
+@Test
+void generateJoinCode_shouldProduceDifferentCodesOnConsecutiveCalls() {
+    String firstCode = groupService.generateJoinCode();
+    String secondCode = groupService.generateJoinCode();
+
+    Assertions.assertThat(firstCode).isNotEqualTo(secondCode);
+    Assertions.assertThat(firstCode).hasSize(8);
+    Assertions.assertThat(secondCode).hasSize(8);
+    Assertions.assertThat(firstCode).matches("[A-Z0-9]{8}");
+    Assertions.assertThat(secondCode).matches("[A-Z0-9]{8}");
+}
 }
