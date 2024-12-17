@@ -18,9 +18,12 @@ RUN mvn clean package -DskipTests
 FROM eclipse-temurin:17-jre-alpine AS runtime
 WORKDIR /app
 
+
 # Ajouter l'utilisateur non-root pour des raisons de sécurité
-RUN addgroup -S spring && adduser -S spring -G spring
-USER spring:spring
+RUN addgroup -S digilbum && adduser -S digilbum -G digilbum
+# Créer le dossier pictures et configurer les permissions avant de changer d'utilisateur
+USER digilbum:digilbum
+RUN mkdir ~/pictures && chmod 777 ~/pictures
 
 # Copier le JAR depuis l'étape de build
 COPY --from=build /app/target/*.jar app.jar
