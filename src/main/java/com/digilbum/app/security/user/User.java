@@ -36,8 +36,8 @@ public class User implements UserDetails {
 
   @Setter
   @Getter
-  @OneToMany(mappedBy = "user")
-  private List<Token> tokens;
+  @OneToMany(mappedBy = "user",fetch = FetchType.EAGER)
+  private List<Token> tokens = new ArrayList<>();
 
   @Setter
   @ManyToMany(fetch = FetchType.EAGER)

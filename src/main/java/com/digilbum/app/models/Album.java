@@ -3,6 +3,7 @@ package com.digilbum.app.models;
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.time.Instant;
 
 import com.digilbum.app.security.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,9 +20,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "Album")
+@EntityListeners(AuditingEntityListener.class)
 public class Album {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +40,13 @@ public class Album {
     @JoinColumn(name = "event_id")
     private Event event;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private LocalDate startDate;
 
-    @Column( nullable = false)
+    @Column(nullable = false)
     private LocalDate endDate;
 
+    @CreatedBy
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(nullable = true)
     private User user;
@@ -47,6 +54,9 @@ public class Album {
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "album")
     @JsonManagedReference
     private Set<Picture> pictures = new LinkedHashSet<>();
+
+    @CreatedDate
+    private Instant createdAt;
 
     public Event getEvent() {
         return event;
@@ -104,6 +114,14 @@ public class Album {
         this.user = user;
     }
 
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         return "Album{" +
@@ -113,6 +131,7 @@ public class Album {
                 ", endDate=" + endDate +
                 ", user=" + user +
                 ", pictures=" + pictures +
+                ", createdAt=" + createdAt +
                 '}';
     }
 }
