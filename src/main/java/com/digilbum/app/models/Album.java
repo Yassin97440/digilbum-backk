@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.time.Instant;
+import java.util.HashSet;
 
 import com.digilbum.app.security.user.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -57,6 +58,9 @@ public class Album {
 
     @CreatedDate
     private Instant createdAt;
+
+    @OneToMany(mappedBy = "id.album", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<AlbumGroupMapping> sharedGroups = new HashSet<>();
 
     public Event getEvent() {
         return event;
@@ -122,6 +126,14 @@ public class Album {
         this.createdAt = createdAt;
     }
 
+    public Set<AlbumGroupMapping> getSharedGroups() {
+        return sharedGroups;
+    }
+
+    public void setSharedGroups(Set<AlbumGroupMapping> sharedGroups) {
+        this.sharedGroups = sharedGroups;
+    }
+
     @Override
     public String toString() {
         return "Album{" +
@@ -132,6 +144,7 @@ public class Album {
                 ", user=" + user +
                 ", pictures=" + pictures +
                 ", createdAt=" + createdAt +
+                ", sharedGroups=" + sharedGroups +
                 '}';
     }
 }

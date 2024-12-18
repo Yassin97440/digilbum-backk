@@ -8,6 +8,8 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -15,7 +17,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
-@Table(name= "`group`")
+@Table(name = "`group`")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +26,11 @@ public class Group {
 
     @Lob
     @Enumerated(EnumType.STRING)
-    @Column( nullable = false)
+    @Column(nullable = false)
     private GroupType type;
 
     @ColumnDefault("'not specified'")
-    @Column( nullable = false, length = 150)
+    @Column(nullable = false, length = 150)
     private String name;
 
     @CreatedDate
@@ -38,7 +40,11 @@ public class Group {
     @ManyToOne
     private User createdBy;
 
-    @Column( nullable = false, length = 250, unique = true)
+    @Column(nullable = false, length = 250, unique = true)
     private String joinCode;
+
+    @OneToMany(mappedBy = "id.group", fetch = FetchType.EAGER, orphanRemoval = true)
+    private Set<AlbumGroupMapping> sharedAlbums = new HashSet<>();
+
 
 }
