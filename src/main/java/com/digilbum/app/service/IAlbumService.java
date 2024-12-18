@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface IAlbumService {
 
-
     List<AlbumDto> getDtos();
 
     List<AlbumDto> loadDtosForOwner();
@@ -15,4 +14,6 @@ public interface IAlbumService {
     public Album newAlbum(AlbumDto newAlbum);
 
     void deleteAlbum(Integer albumId);
+
+    List<AlbumDto> getSharedAlbumsForUser(Integer userId);
 }
