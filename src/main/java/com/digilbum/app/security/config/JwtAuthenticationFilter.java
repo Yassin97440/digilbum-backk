@@ -62,7 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   }
 
   private void addCorsHeaders(HttpServletResponse response){
-    response.setHeader("Access-Control-Allow-Origin", "http://digilbum.abdulla.fr");
+    response.setHeader("Access-Control-Allow-Origin", "https://digilbum.abdulla.fr");
     response.setHeader("Access-Control-Allow-Credentials", "true");
     response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
     response.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With, multipart/form-data");
