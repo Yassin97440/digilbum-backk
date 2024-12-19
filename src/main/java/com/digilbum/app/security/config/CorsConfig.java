@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://localhost:3000","https://207.154.214.80:3000", "https://digilbum.abdulla.fr") // Add the origin of your Nuxt application
+                .allowedOrigins("https://localhost:3000", "https://digilbum.abdulla.fr") // Add the origin of your Nuxt application
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Add the allowed HTTP methods
                 .allowedHeaders("*") // Add the allowed headers
                 .allowCredentials(true)
