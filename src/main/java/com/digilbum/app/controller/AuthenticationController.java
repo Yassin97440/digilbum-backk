@@ -12,7 +12,6 @@ import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://159.89.0.150:3000")
 @RequiredArgsConstructor
 public class AuthenticationController {
 
