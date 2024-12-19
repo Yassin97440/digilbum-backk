@@ -15,8 +15,8 @@ public class AlbumSharingController {
     @PostMapping("/share")
     public ResponseEntity<Void> shareAlbum(
             @RequestParam Integer albumId,
-            @RequestParam Integer groupId) {
-        albumSharingService.shareAlbumWithGroup(albumId, groupId);
+            @RequestParam Integer ...groupIds) {
+        albumSharingService.shareAlbumWithGroup(albumId, groupIds);
         return ResponseEntity.ok().build();
     }
 

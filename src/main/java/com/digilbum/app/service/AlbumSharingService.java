@@ -19,19 +19,22 @@ public class AlbumSharingService {
     private final AlbumGroupMappingRepository albumGroupMappingRepository;
 
     @Transactional
-    public void shareAlbumWithGroup(Integer albumId, Integer groupId) {
+    public void shareAlbumWithGroup(Integer albumId, Integer[] groupIds) {
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new RuntimeException("Album non trouvé"));
-        Group group = groupRepository.findById(groupId)
-                .orElseThrow(() -> new RuntimeException("Groupe non trouvé"));
+        for (Integer groupId : groupIds) {
 
-        AlbumGroupMapping mapping = new AlbumGroupMapping();
-        AlbumGroupMappingId mappingId = new AlbumGroupMappingId();
-        mappingId.setAlbum(album);
-        mappingId.setGroup(group);
-        mapping.setId(mappingId);
+            Group group = groupRepository.findById(groupId)
+                    .orElseThrow(() -> new RuntimeException("Groupe non trouvé"));
 
-        albumGroupMappingRepository.save(mapping);
+            AlbumGroupMapping mapping = new AlbumGroupMapping();
+            AlbumGroupMappingId mappingId = new AlbumGroupMappingId();
+            mappingId.setAlbum(album);
+            mappingId.setGroup(group);
+            mapping.setId(mappingId);
+            albumGroupMappingRepository.save(mapping);
+        }
+
     }
 
     @Transactional
