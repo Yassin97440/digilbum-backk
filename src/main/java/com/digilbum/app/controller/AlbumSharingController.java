@@ -12,7 +12,7 @@ public class AlbumSharingController {
 
     private final AlbumSharingService albumSharingService;
 
-    @PostMapping("/share")
+    @GetMapping("/share")
     public ResponseEntity<Void> shareAlbum(
             @RequestParam Integer albumId,
             @RequestParam Integer ...groupIds) {
