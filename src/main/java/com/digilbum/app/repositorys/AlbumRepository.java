@@ -14,13 +14,4 @@ public interface AlbumRepository extends JpaRepository<Album, Integer> {
             "FROM Album  a where a.user.id = ?1")
     List<AlbumDto> findDtoByUserId(Integer userId);
 
-    List<Album> findByUserId(Integer userId);
-
-    //MAY BE USELESS
-    @Query("SELECT DISTINCT new com.digilbum.app.dto.AlbumDto(a.id, a.name, null, a.startDate, a.endDate) " +
-            "FROM Album a " +
-            "LEFT JOIN a.sharedGroups ag " +
-            "LEFT JOIN ag.id.group g " +
-            "WHERE a.user.id = :userId ")
-    List<AlbumDto> findAccessibleAlbumsByUserId(Integer userId);
 }
