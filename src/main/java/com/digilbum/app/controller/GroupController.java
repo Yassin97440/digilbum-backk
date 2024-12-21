@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController()
 @RequestMapping("/api/v2/group")
 @AllArgsConstructor
@@ -30,5 +32,9 @@ public class GroupController {
         return groupService.toDto(
                 groupService.findByJoinCode(joinCode)
         );
+    }
+    @GetMapping("/")
+    List<GroupDto> loadGroupsForUser(){
+        return groupService.loadGroupsForUser();
     }
 }

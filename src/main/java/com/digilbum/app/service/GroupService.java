@@ -9,9 +9,13 @@ import com.digilbum.app.repositorys.UserGroupMappingRepository;
 import com.digilbum.app.security.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 @AllArgsConstructor
@@ -109,5 +113,19 @@ public class GroupService {
                .type(dto.groupType())
                .joinCode(dto.joinCode())
                .build();
+    }
+
+    public List<GroupDto> loadGroupsForUser() {
+        Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authUser.getPrincipal();
+        List<GroupDto> groupsUserDto = new ArrayList<>();
+        for (UserGroupMapping mapping : getUserGroupMappingsForUser(user.getId())) {
+            groupsUserDto.add(toDto(mapping.getGroup()));
+        }
+        return groupsUserDto;
+    }
+
+    private Iterable<? extends UserGroupMapping> getUserGroupMappingsForUser(Integer userId) {
+        return userGroupMappingRepository.findById_User_Id(userId);
     }
 }
