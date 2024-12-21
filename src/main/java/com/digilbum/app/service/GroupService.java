@@ -3,9 +3,7 @@ package com.digilbum.app.service;
 import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.models.Group;
 import com.digilbum.app.models.UserGroupMapping;
-import com.digilbum.app.models.UserGroupMappingId;
 import com.digilbum.app.repositorys.GroupRepository;
-import com.digilbum.app.repositorys.UserGroupMappingRepository;
 import com.digilbum.app.security.user.User;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -13,16 +11,16 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @AllArgsConstructor
 @Service
 public class GroupService {
     private final GroupRepository groupRepository;
-    private final UserGroupMappingRepository userGroupMappingRepository;
+    private final UserGroupService userGroupService;
 
     public Group save(GroupDto groupToSave){
 
@@ -43,11 +41,8 @@ public class GroupService {
                 .build();
         final Group gr = groupRepository.save(group);
 
-
         return toDto(
-                userGroupMappingRepository.save(
-                        createAssociation(creator, gr, true)
-                ).getGroup()
+                userGroupService.createAdminAssociation(creator, gr).getGroup()
         );
     }
 
@@ -58,23 +53,10 @@ public class GroupService {
     }
 
     public GroupDto addMember(User newMember, Group group) {
-        createAssociation(newMember, group, false);
 
         return toDto(
-                userGroupMappingRepository.save(
-                        createAssociation(newMember, group, false)
-                ).getGroup()
+                userGroupService.createBasicAssociation(newMember, group).getGroup()
         );
-    }
-
-    private UserGroupMapping createAssociation(User user, Group gr, boolean admin) {
-
-        return new UserGroupMapping(
-                new UserGroupMappingId(user, gr),
-                admin,
-                Instant.now()
-        );
-
     }
 
     public Group findByJoinCode(String joinCode)  throws EntityNotFoundException {
@@ -119,13 +101,19 @@ public class GroupService {
         Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authUser.getPrincipal();
         List<GroupDto> groupsUserDto = new ArrayList<>();
-        for (UserGroupMapping mapping : getUserGroupMappingsForUser(user.getId())) {
+        for (UserGroupMapping mapping : userGroupService.loadUserGroupMappingsForUser(user.getId())) {
             groupsUserDto.add(toDto(mapping.getGroup()));
         }
         return groupsUserDto;
     }
 
-    private Iterable<? extends UserGroupMapping> getUserGroupMappingsForUser(Integer userId) {
-        return userGroupMappingRepository.findById_User_Id(userId);
+
+
+    public GroupDto findById(Integer groupId){
+        Optional<Group> group = groupRepository.findById(groupId);
+        if (group.isPresent())
+            return toDto(group.get());
+
+        throw new EntityNotFoundException("Group not found for id : " + groupId);
     }
 }
