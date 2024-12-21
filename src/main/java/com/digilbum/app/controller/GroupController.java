@@ -37,4 +37,8 @@ public class GroupController {
     List<GroupDto> loadGroupsForUser(){
         return groupService.loadGroupsForUser();
     }
+    @GetMapping("/{groupId}")
+    public GroupDto findById(@PathVariable Integer groupId){
+        return groupService.findById(groupId);
+    }
 }
