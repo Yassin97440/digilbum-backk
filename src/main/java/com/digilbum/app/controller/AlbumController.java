@@ -22,7 +22,7 @@ public class AlbumController {
     }
 
     @PostMapping("/new")
-    public Album addNew(@RequestBody AlbumDto album) {
+    public AlbumDto addNew(@RequestBody AlbumDto album) {
         return albumService.newAlbum(album);
     }
 
@@ -33,14 +33,20 @@ public class AlbumController {
         albumService.deleteAlbum(albumId);
     }
 
-    @GetMapping("/getAll")
-    public Iterable<AlbumDto> loadAll() {
-        return albumService.getDtos();
-    }
-
     @GetMapping("/forOwner")
     public List<AlbumDto> loadForOwner() {
         return albumService.loadDtosForOwner();
+    }
+
+    @GetMapping("/forUser")
+    List<AlbumDto> loadSharedAlbumsForUser() {
+        try {
+            return albumService.loadSharedAlbumsForUser();
+        }
+        catch (Exception e){
+            logger.severe("Error loading shared albums for user  : " + e.getMessage());
+            throw e;
+        }
     }
 
 
