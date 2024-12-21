@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Setter
 @Entity
 @Table(name = "`group`")
+@EntityListeners(AuditingEntityListener.class)
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,8 @@ public class Group {
     private Instant createdAt;
 
     @CreatedBy
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(nullable = true)
     private User createdBy;
 
     @Column(nullable = false, length = 250, unique = true)
