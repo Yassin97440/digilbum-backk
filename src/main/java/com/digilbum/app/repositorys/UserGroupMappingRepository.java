@@ -10,4 +10,6 @@ public interface UserGroupMappingRepository
         extends JpaRepository<UserGroupMapping, UserGroupMappingId>
 {
     List<UserGroupMapping> findById_User_Id(Integer id);
+
+    List<UserGroupMapping> findById_Group_Id(Integer groupId);
 }
