@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface AlbumGroupMappingRepository extends JpaRepository<AlbumGroupMapping, AlbumGroupMappingId> {
 
-    @Query("SELECT agm FROM AlbumGroupMapping agm WHERE agm.id.group.id IN " +
-            "(SELECT ugm.id.group.id FROM UserGroupMapping ugm WHERE ugm.id.user.id = :userId)")
+    @Query("SELECT agm FROM AlbumGroupMapping agm" +
+            " WHERE agm.id.group.id IN " +
+            "(SELECT ugm.id.group.id FROM UserGroupMapping ugm WHERE ugm.id.user.id = :userId)" +
+            "OR agm.id.album.user.id = :userId")
     List<AlbumGroupMapping> findAlbumsByUserGroups(Integer userId);
 }

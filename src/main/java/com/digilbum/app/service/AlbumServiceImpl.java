@@ -12,12 +12,10 @@ import com.digilbum.app.security.user.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import com.digilbum.app.models.Album;
 import com.digilbum.app.repositorys.AlbumRepository;
-import com.digilbum.app.service.AlbumSharingService;
 
 @Service
 public class AlbumServiceImpl implements IAlbumService {
@@ -62,11 +60,13 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public Album newAlbum(AlbumDto newAlbumDto) {
+    public AlbumDto newAlbum(AlbumDto newAlbumDto) {
         Album newAlbum = toEntity(newAlbumDto);
         Optional<User> user = userRepository.findById(1);
         user.ifPresent(newAlbum::setUser);
-        return albumRepository.save(newAlbum);
+        return toDto(
+                albumRepository.save(newAlbum)
+        );
     }
 
     @Override
@@ -77,9 +77,11 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<AlbumDto> getSharedAlbumsForUser(Integer userId) {
+    public List<AlbumDto> loadSharedAlbumsForUser() {
+        Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authUser.getPrincipal();
         List<AlbumDto> albumDtos = new ArrayList<>();
-        List<AlbumGroupMapping> sharedAlbums = albumSharingService.findAlbumsByUserGroups(userId);
+        List<AlbumGroupMapping> sharedAlbums = albumSharingService.findAlbumsByUserGroups(user.getId());
         for (AlbumGroupMapping albumGroupMapping : sharedAlbums) {
             albumDtos.add(toDto(albumGroupMapping.getAlbum()));
         }
