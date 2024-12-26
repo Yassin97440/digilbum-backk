@@ -46,7 +46,9 @@ public class GroupService {
         );
     }
 
-    public GroupDto addMember(String joinCode, User newMember) {
+    public GroupDto addMember(String joinCode) {
+        Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
+        User newMember = (User) authUser.getPrincipal();
         Group group = findByJoinCode(joinCode);
         return addMember(newMember, group);
 
