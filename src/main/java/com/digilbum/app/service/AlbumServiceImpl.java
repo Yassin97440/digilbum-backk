@@ -56,7 +56,12 @@ public class AlbumServiceImpl implements IAlbumService {
     public List<AlbumDto> loadDtosForOwner() {
         Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authUser.getPrincipal();
-        return albumRepository.findDtoByUserId(user.getId());
+
+        List<Album> albums = albumRepository.findDtoByUserId(user.getId());
+
+        return albums.stream().map(
+                this::toDto
+        ).toList();
     }
 
     @Override
