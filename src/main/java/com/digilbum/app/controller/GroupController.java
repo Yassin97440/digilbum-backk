@@ -27,7 +27,7 @@ public class GroupController {
     }
 
     @PostMapping("/")
-    public GroupDto create(GroupDto groupDto)   {
+    public GroupDto create(@RequestBody GroupDto groupDto)   {
         Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authUser.getPrincipal();
         return groupService.create(groupDto, user );
