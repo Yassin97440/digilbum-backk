@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Optional;
 
@@ -28,14 +29,15 @@ class AlbumSharingServiceTest {
     @Mock
     private AlbumGroupMappingRepository albumGroupMappingRepository;
 
+    @Mock
     private AlbumSharingService albumSharingService;
 
     @BeforeEach
     void setUp() {
-        albumSharingService = new AlbumSharingService(
-                albumRepository,
-                groupRepository,
-                albumGroupMappingRepository);
+//        albumSharingService = new AlbumSharingService(
+//                albumRepository,
+//                groupRepository,
+//                albumGroupMappingRepository);
     }
 
 //    @Test

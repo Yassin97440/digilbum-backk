@@ -10,9 +10,13 @@ public interface IAlbumService {
 
     List<AlbumDto> loadDtosForOwner();
 
-    public AlbumDto newAlbum(AlbumDto newAlbum);
+    AlbumDto create(AlbumDto newAlbum);
+
+    void update(AlbumDto albumDto);
 
     void deleteAlbum(Integer albumId);
 
     List<AlbumDto> loadSharedAlbumsForUser();
+
+    AlbumDto getDtoById(Integer id);
 }

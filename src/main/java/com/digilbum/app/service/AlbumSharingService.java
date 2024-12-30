@@ -1,14 +1,18 @@
 package com.digilbum.app.service;
 
+import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.models.*;
 import com.digilbum.app.repositorys.AlbumGroupMappingRepository;
 import com.digilbum.app.repositorys.AlbumRepository;
 import com.digilbum.app.repositorys.GroupRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +21,7 @@ public class AlbumSharingService {
     private final AlbumRepository albumRepository;
     private final GroupRepository groupRepository;
     private final AlbumGroupMappingRepository albumGroupMappingRepository;
+    private final GroupService groupService;
 
     @Transactional
     public void shareAlbumWithGroup(Integer albumId, Integer[] groupIds) {
@@ -53,5 +58,18 @@ public class AlbumSharingService {
 
     List<AlbumGroupMapping> findAlbumsByUserGroups(Integer userId){
         return albumGroupMappingRepository.findAlbumsByUserGroups(userId);
+    }
+
+    public List<GroupDto> getGroupsForAlbumShared(Integer albumId){
+        Optional<List<AlbumGroupMapping>> albumGroupMappings = albumGroupMappingRepository.findAllById_Album_Id(albumId);
+        if(!albumGroupMappings.isPresent()){
+            throw new EntityNotFoundException("AlbumGroupMapping");
+        }
+        List<Group> groups = new ArrayList<>();
+        for(AlbumGroupMapping mapping : albumGroupMappings.get()){
+            groups.add(mapping.getId().getGroup());
+        }
+        return groups.stream()
+               .map(groupService::toDto).toList();
     }
 }

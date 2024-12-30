@@ -65,7 +65,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public AlbumDto newAlbum(AlbumDto newAlbumDto) {
+    public AlbumDto create(AlbumDto newAlbumDto) {
         Album newAlbum = toEntity(newAlbumDto);
         Optional<User> user = userRepository.findById(1);
         user.ifPresent(newAlbum::setUser);
@@ -75,7 +75,13 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
+    public void update(AlbumDto albumDto) {
+        albumRepository.update(albumDto.name(), albumDto.startedAt(), albumDto.endedAt(), albumDto.id());
+    }
+
+    @Override
     public void deleteAlbum(Integer albumId) {
+
         Album album = albumRepository.findById(albumId).get();
         pictureService.deletePictures(album);
         albumRepository.delete(album);
@@ -91,6 +97,12 @@ public class AlbumServiceImpl implements IAlbumService {
             albumDtos.add(toDto(albumGroupMapping.getAlbum()));
         }
         return albumDtos;
+    }
+
+    @Override
+    public AlbumDto getDtoById(Integer id) {
+        Album album = albumRepository.findById(id).orElse(null);
+        return album == null? null : toDto(album);
     }
 
     private AlbumDto toDto(Album album) {

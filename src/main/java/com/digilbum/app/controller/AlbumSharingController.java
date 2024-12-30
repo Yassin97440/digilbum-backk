@@ -1,9 +1,12 @@
 package com.digilbum.app.controller;
 
+import com.digilbum.app.dto.GroupDto;
 import com.digilbum.app.service.AlbumSharingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v2/album-sharing")
@@ -26,5 +29,10 @@ public class AlbumSharingController {
             @RequestParam Integer groupId) {
         albumSharingService.unshareAlbumWithGroup(albumId, groupId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/groups")
+    public ResponseEntity<List<GroupDto>> getGroupsForAlbumShared(@RequestParam Integer albumId) {
+        return ResponseEntity.ok(albumSharingService.getGroupsForAlbumShared(albumId));
     }
 }
