@@ -27,19 +27,21 @@ public class AlbumServiceImpl implements IAlbumService {
     private final String picturesHost;
     private final String picturesFolders;
     private final AlbumSharingService albumSharingService;
+    private final EventService eventService;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-            IPictureService pictureService,
-            UserRepository userRepository,
-            @Value("${pictures.server.url}") String picturesHost,
-            @Value("${pictures.folder.path}") String picturesFolders,
-            AlbumSharingService albumSharingService) {
+                            IPictureService pictureService,
+                            UserRepository userRepository,
+                            @Value("${pictures.server.url}") String picturesHost,
+                            @Value("${pictures.folder.path}") String picturesFolders,
+                            AlbumSharingService albumSharingService, EventService eventService) {
         this.albumRepository = albumRepository;
         this.pictureService = pictureService;
         this.userRepository = userRepository;
         this.picturesHost = picturesHost;
         this.picturesFolders = picturesFolders;
         this.albumSharingService = albumSharingService;
+        this.eventService = eventService;
     }
 
     @Override
@@ -68,8 +70,6 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public AlbumDto create(AlbumDto newAlbumDto) {
         Album newAlbum = toEntity(newAlbumDto);
-        Optional<User> user = userRepository.findById(1);
-        user.ifPresent(newAlbum::setUser);
         return toDto(
                 albumRepository.save(newAlbum)
         );
@@ -122,12 +122,26 @@ public class AlbumServiceImpl implements IAlbumService {
             coverPicPath = pic.get().getPathFile();
             coverPicPath = picturesHost + picturesFolders + coverPicPath;
         }
-        return new AlbumDto(
-                album.getId(),
-                album.getName(),
-                coverPicPath,
-                album.getStartDate(),
-                album.getEndDate());
+        if (album.getEvent() != null){
+            return new AlbumDto(
+                    album.getId(),
+                    album.getName(),
+                    coverPicPath,
+                    album.getStartDate(),
+                    album.getEndDate(),
+                    album.getEvent().getId(),
+                    album.getEvent().getName());
+        }
+        else {
+            return new AlbumDto(
+                    album.getId(),
+                    album.getName(),
+                    coverPicPath,
+                    album.getStartDate(),
+                    album.getEndDate(),
+                    null,
+                    null);
+        }
 
     }
 
@@ -136,6 +150,10 @@ public class AlbumServiceImpl implements IAlbumService {
         album.setName(albumDto.name());
         album.setStartDate(albumDto.startedAt());
         album.setEndDate(albumDto.endedAt());
+
+        if (albumDto.eventId()!= null)
+            album.setEvent(eventService.load(albumDto.eventId()));
+
         return album;
     }
 

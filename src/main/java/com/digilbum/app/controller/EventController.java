@@ -1,6 +1,5 @@
 package com.digilbum.app.controller;
 
-import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.dto.EventDto;
 import com.digilbum.app.service.EventService;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,7 @@ public class EventController {
 
     @GetMapping("/{id}")
     EventDto loadById(@PathVariable Integer id){
-        return eventService.load(id);
+        return eventService.loadDto(id);
     }
     @PostMapping("/")
         EventDto create(@RequestBody EventDto newEvent) {

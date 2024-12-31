@@ -25,14 +25,20 @@ public class EventService {
         );
     }
 
-    public EventDto load(Integer id){
+    public EventDto loadDto(Integer id){
+        return toDto(
+                this.load(id)
+        );
+    }
+
+    public Event load(Integer id){
         Optional<Event> event = eventRepository.findById(id);
         if (!event.isPresent())
             throw new EntityNotFoundException();
-        return toDto(
-                event.get()
-        );
+        return event.get();
     }
+
+
 
     public void update(EventDto eventDto){
         eventRepository.update(
