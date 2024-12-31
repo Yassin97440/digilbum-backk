@@ -9,6 +9,7 @@ import com.digilbum.app.models.AlbumGroupMapping;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,19 +27,21 @@ public class AlbumServiceImpl implements IAlbumService {
     private final String picturesHost;
     private final String picturesFolders;
     private final AlbumSharingService albumSharingService;
+    private final EventService eventService;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-            IPictureService pictureService,
-            UserRepository userRepository,
-            @Value("${pictures.server.url}") String picturesHost,
-            @Value("${pictures.folder.path}") String picturesFolders,
-            AlbumSharingService albumSharingService) {
+                            IPictureService pictureService,
+                            UserRepository userRepository,
+                            @Value("${pictures.server.url}") String picturesHost,
+                            @Value("${pictures.folder.path}") String picturesFolders,
+                            AlbumSharingService albumSharingService, EventService eventService) {
         this.albumRepository = albumRepository;
         this.pictureService = pictureService;
         this.userRepository = userRepository;
         this.picturesHost = picturesHost;
         this.picturesFolders = picturesFolders;
         this.albumSharingService = albumSharingService;
+        this.eventService = eventService;
     }
 
     @Override
@@ -67,8 +70,6 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public AlbumDto create(AlbumDto newAlbumDto) {
         Album newAlbum = toEntity(newAlbumDto);
-        Optional<User> user = userRepository.findById(1);
-        user.ifPresent(newAlbum::setUser);
         return toDto(
                 albumRepository.save(newAlbum)
         );
@@ -105,6 +106,15 @@ public class AlbumServiceImpl implements IAlbumService {
         return album == null? null : toDto(album);
     }
 
+    @Override
+    public List<AlbumDto> loadAlbumsForEvent(Integer eventId) {
+        Optional<List<Album>> album = albumRepository.findALlByEvent_Id(eventId);
+        if (!album.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        return album.get().stream().map(this::toDto).toList();
+    }
+
     private AlbumDto toDto(Album album) {
         String coverPicPath = "";
         Optional<Picture> pic = album.getPictures().stream().findFirst();
@@ -112,12 +122,26 @@ public class AlbumServiceImpl implements IAlbumService {
             coverPicPath = pic.get().getPathFile();
             coverPicPath = picturesHost + picturesFolders + coverPicPath;
         }
-        return new AlbumDto(
-                album.getId(),
-                album.getName(),
-                coverPicPath,
-                album.getStartDate(),
-                album.getEndDate());
+        if (album.getEvent() != null){
+            return new AlbumDto(
+                    album.getId(),
+                    album.getName(),
+                    coverPicPath,
+                    album.getStartDate(),
+                    album.getEndDate(),
+                    album.getEvent().getId(),
+                    album.getEvent().getName());
+        }
+        else {
+            return new AlbumDto(
+                    album.getId(),
+                    album.getName(),
+                    coverPicPath,
+                    album.getStartDate(),
+                    album.getEndDate(),
+                    null,
+                    null);
+        }
 
     }
 
@@ -126,6 +150,10 @@ public class AlbumServiceImpl implements IAlbumService {
         album.setName(albumDto.name());
         album.setStartDate(albumDto.startedAt());
         album.setEndDate(albumDto.endedAt());
+
+        if (albumDto.eventId()!= null)
+            album.setEvent(eventService.load(albumDto.eventId()));
+
         return album;
     }
 

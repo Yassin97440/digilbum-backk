@@ -67,4 +67,17 @@ public class AlbumController {
     }
 
 
+    @GetMapping("/forEvent/{eventId}")
+    List<AlbumDto> loadAlbumsForEvent(@PathVariable Integer eventId) {
+        try {
+            return albumService.loadAlbumsForEvent(eventId);
+        }
+        catch (Exception e){
+            logger.severe("Error loading albums for event : " + e.getMessage());
+            throw e;
+        }
+    }
+
+
+
 }

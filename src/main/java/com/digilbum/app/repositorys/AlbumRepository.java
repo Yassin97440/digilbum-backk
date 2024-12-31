@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface AlbumRepository extends JpaRepository<Album, Integer> {
 
@@ -20,4 +21,6 @@ public interface AlbumRepository extends JpaRepository<Album, Integer> {
     @Modifying
     @Query("update Album a set a.name = :name, a.startDate = :startDate, a.endDate = :endDate where a.id = :id")
     void update(@Param("name") String name, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate, @Param("id") Integer id);
+
+    Optional<List<Album>> findALlByEvent_Id(Integer id);
 }

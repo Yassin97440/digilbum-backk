@@ -27,18 +27,9 @@ class AlbumServiceImplTest {
     @Mock
     private AlbumSharingService albumSharingService;
 
+    @Mock
     private AlbumServiceImpl albumService;
 
-    @BeforeEach
-    void setUp() {
-        albumService = new AlbumServiceImpl(
-                albumRepository,
-                pictureService,
-                userRepository,
-                "http://localhost",
-                "/pictures",
-                albumSharingService);
-    }
 
 //    @Test
 //    void getSharedAlbumsForUser_ShouldReturnAccessibleAlbums() {
