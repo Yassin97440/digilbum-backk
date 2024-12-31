@@ -9,6 +9,7 @@ import com.digilbum.app.models.AlbumGroupMapping;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
 import com.digilbum.app.security.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -103,6 +104,15 @@ public class AlbumServiceImpl implements IAlbumService {
     public AlbumDto getDtoById(Integer id) {
         Album album = albumRepository.findById(id).orElse(null);
         return album == null? null : toDto(album);
+    }
+
+    @Override
+    public List<AlbumDto> loadAlbumsForEvent(Integer eventId) {
+        Optional<List<Album>> album = albumRepository.findALlByEvent_Id(eventId);
+        if (!album.isPresent()) {
+            throw new EntityNotFoundException();
+        }
+        return album.get().stream().map(this::toDto).toList();
     }
 
     private AlbumDto toDto(Album album) {

@@ -19,4 +19,6 @@ public interface IAlbumService {
     List<AlbumDto> loadSharedAlbumsForUser();
 
     AlbumDto getDtoById(Integer id);
+
+    List<AlbumDto> loadAlbumsForEvent(Integer eventId);
 }
