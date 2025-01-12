@@ -6,11 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.Hibernate;
 
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
