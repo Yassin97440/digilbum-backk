@@ -1,5 +1,7 @@
 package com.digilbum.app.security.config;
 
+import com.digilbum.app.security.user.Permission;
+import com.digilbum.app.security.user.Role;
 import com.digilbum.app.security.user.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,8 +14,10 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.Collection;
 
 @Service
 public class JwtService {
@@ -36,22 +40,30 @@ public class JwtService {
     claims.put("firstname", user.getFirstname());
     claims.put("lastname", user.getLastname());
     claims.put("email", user.getEmail());
-
+    claims.put("permissions", getUserPermissions(user));
     return generateToken(claims, userDetails);
+  }
+
+  public List<String> getUserPermissions(User user) {
+    return user.getAuthorities().stream()
+        .map(role -> ((Role) role).getAllowedOperations())
+        .flatMap(Collection::stream)
+        .map(Permission::getAuthority)
+        .distinct()
+        .toList();
   }
 
   public String generateToken(
       Map<String, Object> extraClaims,
-      UserDetails userDetails
-  ) {
+      UserDetails userDetails) {
     return Jwts
-            .builder()
-            .setClaims(extraClaims)  // Ajoutez d'abord les claims supplémentaires
-            .setSubject(userDetails.getUsername())
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 70))
-            .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-            .compact();
+        .builder()
+        .setClaims(extraClaims)
+        .setSubject(userDetails.getUsername())
+        .setIssuedAt(new Date(System.currentTimeMillis()))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 70))
+        .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+        .compact();
   }
 
   public boolean isTokenValid(String token, UserDetails userDetails) {

@@ -13,4 +13,8 @@ public class Permission implements GrantedAuthority {
     public String getAuthority() {
         return id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
