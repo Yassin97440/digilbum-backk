@@ -2,6 +2,7 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
+ENV SPRING_PROFILES_ACTIVE=prod
 # Copier les fichiers de configuration Maven et le pom.xml
 COPY pom.xml .
 COPY mvnw .mvnw
@@ -33,3 +34,5 @@ EXPOSE 8080
 
 # Lancer l'application
 ENTRYPOINT ["sh", "-c", "java -jar app.jar"]
+
+
