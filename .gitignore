@@ -33,3 +33,7 @@ build/
 .vscode/
 src/main/java/com/digilbum/app/services/logochien.png
 .gitignore
+
+# Ignorer les fichiers de configuration sensibles
+src/main/resources/application-dev.yml
+src/main/resources/application-prod.yml
