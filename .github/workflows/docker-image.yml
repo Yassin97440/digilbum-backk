@@ -43,8 +43,8 @@ jobs:
               -e MYSQL_HOST=207.154.214.80 \
               -e MYSQL_PORT=3306 \
               -e MYSQL_DATABASE=DIGILBUM \
-              -e MYSQL_USER=${{ secrets.MYSQL_USER }} \
-              -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
+              -e MYSQL_USER=${{ secrets.DATABASE_USER }} \
+              -e MYSQL_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
               -e PICTURES_SERVER_URL=https://pictures.digilbum.abdulla.fr \
               -e PICTURES_FOLDER_PATH=/home/digilbum/pictures \
               digilbum-back:${{ github.run_number }}
