@@ -8,7 +8,6 @@ import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.models.AlbumGroupMapping;
 import com.digilbum.app.models.Picture;
 import com.digilbum.app.security.user.User;
-import com.digilbum.app.security.user.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -23,21 +22,18 @@ public class AlbumServiceImpl implements IAlbumService {
 
     private final AlbumRepository albumRepository;
     private final IPictureService pictureService;
-    private final UserRepository userRepository;
     private final String picturesHost;
     private final String picturesFolders;
     private final AlbumSharingService albumSharingService;
     private final EventService eventService;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-                            IPictureService pictureService,
-                            UserRepository userRepository,
-                            @Value("${pictures.server.url}") String picturesHost,
-                            @Value("${pictures.folder.path}") String picturesFolders,
-                            AlbumSharingService albumSharingService, EventService eventService) {
+            IPictureService pictureService,
+            @Value("${pictures.server.url}") String picturesHost,
+            @Value("${pictures.folder.path}") String picturesFolders,
+            AlbumSharingService albumSharingService, EventService eventService) {
         this.albumRepository = albumRepository;
         this.pictureService = pictureService;
-        this.userRepository = userRepository;
         this.picturesHost = picturesHost;
         this.picturesFolders = picturesFolders;
         this.albumSharingService = albumSharingService;
@@ -63,16 +59,14 @@ public class AlbumServiceImpl implements IAlbumService {
         List<Album> albums = albumRepository.findDtoByUserId(user.getId());
 
         return albums.stream().map(
-                this::toDto
-        ).toList();
+                this::toDto).toList();
     }
 
     @Override
     public AlbumDto create(AlbumDto newAlbumDto) {
         Album newAlbum = toEntity(newAlbumDto);
         return toDto(
-                albumRepository.save(newAlbum)
-        );
+                albumRepository.save(newAlbum));
     }
 
     @Override
@@ -103,7 +97,7 @@ public class AlbumServiceImpl implements IAlbumService {
     @Override
     public AlbumDto getDtoById(Integer id) {
         Album album = albumRepository.findById(id).orElse(null);
-        return album == null? null : toDto(album);
+        return album == null ? null : toDto(album);
     }
 
     @Override
@@ -122,7 +116,7 @@ public class AlbumServiceImpl implements IAlbumService {
             coverPicPath = pic.get().getPathFile();
             coverPicPath = picturesHost + picturesFolders + coverPicPath;
         }
-        if (album.getEvent() != null){
+        if (album.getEvent() != null) {
             return new AlbumDto(
                     album.getId(),
                     album.getName(),
@@ -131,8 +125,7 @@ public class AlbumServiceImpl implements IAlbumService {
                     album.getEndDate(),
                     album.getEvent().getId(),
                     album.getEvent().getName());
-        }
-        else {
+        } else {
             return new AlbumDto(
                     album.getId(),
                     album.getName(),
@@ -151,7 +144,7 @@ public class AlbumServiceImpl implements IAlbumService {
         album.setStartDate(albumDto.startedAt());
         album.setEndDate(albumDto.endedAt());
 
-        if (albumDto.eventId()!= null)
+        if (albumDto.eventId() != null)
             album.setEvent(eventService.load(albumDto.eventId()));
 
         return album;
