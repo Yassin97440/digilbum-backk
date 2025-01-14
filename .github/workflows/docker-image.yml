@@ -13,7 +13,6 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag digilbum-back:${{ github.run_number }}
 
-        # Envoi de l'image vers la VM via SSH
       - name: Save Docker image to a file
         run: docker save digilbum-back:${{ github.run_number }} | gzip > digilbum-back.tar.gz
 
@@ -26,7 +25,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
 
-      # Chargement et lancement de l'image sur la VM
       - name: Deploy Docker image on VM
         uses: appleboy/ssh-action@master
         with:
@@ -37,4 +35,16 @@ jobs:
             docker load < ~/app/back/digilbum-back.tar.gz
             docker stop digilbum-back || true
             docker rm digilbum-back || true
-            docker run -d -p 8080:8080 --name digilbum-back -v ~/pictures:/home/digilbum/pictures digilbum-back:${{ github.run_number }}
+            docker run -d \
+              -p 8080:8080 \
+              --name digilbum-back \
+              -v ~/pictures:/home/digilbum/pictures \
+              -e SPRING_PROFILES_ACTIVE=prod \
+              -e MYSQL_HOST=207.154.214.80 \
+              -e MYSQL_PORT=3306 \
+              -e MYSQL_DATABASE=DIGILBUM \
+              -e MYSQL_USER=${{ secrets.MYSQL_USER }} \
+              -e MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} \
+              -e PICTURES_SERVER_URL=https://pictures.digilbum.abdulla.fr \
+              -e PICTURES_FOLDER_PATH=/home/digilbum/pictures \
+              digilbum-back:${{ github.run_number }}
