@@ -47,7 +47,7 @@ jobs:
               -e DATABASE_USER="${{ secrets.DATABASE_USER }}" \
               -e DATABASE_PASSWORD="${{ secrets.DATABASE_PASSWORD }}" \
               -e PICTURES_SERVER_URL=https://pictures.digilbum.abdulla.fr \
-              -e PICTURES_FOLDER_PATH=/home/digilbum/pictures \
+              -e PICTURES_FOLDER_PATH=/home/digilbum/pictures/ \
               digilbum-back:${{ github.run_number }}' > deploy.sh
             chmod +x deploy.sh
             ./deploy.sh
