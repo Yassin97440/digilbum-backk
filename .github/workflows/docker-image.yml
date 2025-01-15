@@ -35,16 +35,5 @@ jobs:
             docker load < ~/app/back/digilbum-back.tar.gz
             docker stop digilbum-back || true
             docker rm digilbum-back || true
-            docker run -d \
-            -p 8080:8080 \
-            --name digilbum-back \
-            -v ~/pictures:/home/digilbum/pictures \
-            -e SPRING_PROFILES_ACTIVE=prod \
-            -e DATABASE_HOST=207.154.214.80 \
-            -e DATABASE_PORT=3306 \
-            -e DATABASE_NAME=DIGILBUM \
-            -e DATABASE_USER=${{ secrets.DATABASE_USER }} \
-            -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
-            -e PICTURES_SERVER_URL=https://pictures.digilbum.abdulla.fr \
-            -e PICTURES_FOLDER_PATH=/home/digilbum/pictures \
-            digilbum-back:${{ github.run_number }}
+            docker run -d -p 8080:8080 --name digilbum-back -v ~/pictures:/home/digilbum/pictures -e SPRING_PROFILES_ACTIVE=prod -e DATABASE_HOST=207.154.214.80 -e DATABASE_PORT=3306 -e DATABASE_NAME=DIGILBUM -e DATABASE_USER=${{ secrets.DATABASE_USER }} -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} -e PICTURES_SERVER_URL=https://pictures.digilbum.abdulla.fr -e PICTURES_FOLDER_PATH=/home/digilbum/pictures digilbum-back:${{ github.run_number }}
+            
