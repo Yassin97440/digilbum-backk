@@ -12,18 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.context.annotation.Lazy;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class PictureServiceImpl implements IPictureService {
@@ -45,7 +40,7 @@ public class PictureServiceImpl implements IPictureService {
     public PictureServiceImpl(
             PictureRepository pictureRepository,
             AlbumRepository albumRepository,
-            IAlbumService albumService,
+            @Lazy IAlbumService albumService,
             @Value("${pictures.server.url}") String hostPictureServer,
             @Value("${pictures.folder.path}") String folderPath) {
         this.pictureRepository = pictureRepository;

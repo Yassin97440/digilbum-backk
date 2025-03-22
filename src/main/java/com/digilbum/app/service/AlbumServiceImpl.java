@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
 
 import com.digilbum.app.models.Album;
 import com.digilbum.app.repositorys.AlbumRepository;
@@ -29,7 +30,7 @@ public class AlbumServiceImpl implements IAlbumService {
     private final EventService eventService;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-            IPictureService pictureService,
+            @Lazy IPictureService pictureService,
             @Value("${pictures.server.url}") String picturesHost,
             @Value("${pictures.folder.path}") String picturesFolders,
             AlbumSharingService albumSharingService, EventService eventService) {

@@ -4,7 +4,6 @@ import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.models.Album;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public interface IAlbumService {
 
