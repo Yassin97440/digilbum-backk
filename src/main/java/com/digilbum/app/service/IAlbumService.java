@@ -1,8 +1,10 @@
 package com.digilbum.app.service;
 
 import com.digilbum.app.dto.AlbumDto;
+import com.digilbum.app.models.Album;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public interface IAlbumService {
 
@@ -21,4 +23,7 @@ public interface IAlbumService {
     AlbumDto getDtoById(Integer id);
 
     List<AlbumDto> loadAlbumsForEvent(Integer eventId);
+
+    Album getAtomicAlbum(PictureServiceImpl pictureServiceImpl, Integer albumId);
+
 }
