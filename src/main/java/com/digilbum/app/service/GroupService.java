@@ -95,7 +95,7 @@ public class GroupService {
                 .build();
     }
 
-    public List<GroupDto> loadGroupsForUser() {
+    public List<GroupDto> loadForUser() {
         Authentication authUser = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authUser.getPrincipal();
         List<GroupDto> groupsUserDto = new ArrayList<>();

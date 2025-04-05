@@ -22,7 +22,7 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}")
-    public AlbumDto getAlbumById(@PathVariable Integer id) {
+    public AlbumDto getById(@PathVariable Integer id) {
         return albumService.getDtoById(id);
     }
 
@@ -65,7 +65,7 @@ public class AlbumController {
     }
 
     @GetMapping("/forEvent/{eventId}")
-    List<AlbumDto> loadAlbumsForEvent(@PathVariable Integer eventId) {
+    List<AlbumDto> loadForEvent(@PathVariable Integer eventId) {
         try {
             return albumService.loadForEvent(eventId);
         } catch (Exception e) {

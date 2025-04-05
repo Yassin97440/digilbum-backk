@@ -49,8 +49,8 @@ public class GroupController {
     }
 
     @GetMapping("/")
-    List<GroupDto> loadGroupsForUser() {
-        return groupService.loadGroupsForUser();
+    List<GroupDto> loadForUser() {
+        return groupService.loadForUser();
     }
 
     @GetMapping("/{groupId}")

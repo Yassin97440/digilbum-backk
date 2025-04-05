@@ -27,7 +27,7 @@ public class PictureController {
     }
 
     @PostMapping(path = "/writeAndSavePictures")
-    ResponseEntity<List<PictureDto>> writeAndSavePictures(
+    ResponseEntity<List<PictureDto>> writeAndSave(
             @RequestPart("pictures") List<MultipartFile> pictures,
             @RequestParam String albumId) {
 
@@ -43,7 +43,7 @@ public class PictureController {
     }
 
     @GetMapping("/findForAlbum")
-    public List<PictureDto> findPicturesForAlbumId(@RequestParam Integer albumId) {
+    public List<PictureDto> findPForAlbumId(@RequestParam Integer albumId) {
         return pictureService.loadForAlbum(albumId);
     }
 

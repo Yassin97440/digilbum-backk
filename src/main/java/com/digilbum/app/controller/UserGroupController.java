@@ -1,6 +1,5 @@
 package com.digilbum.app.controller;
 
-
 import com.digilbum.app.dto.UserGroupMappingDto;
 import com.digilbum.app.service.UserGroupService;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ public class UserGroupController {
     private final UserGroupService userGroupService;
 
     @GetMapping("/users")
-    public List<UserGroupMappingDto> loadUsersForGroup(@RequestParam Integer groupId){
-        return userGroupService.loadUsersForGroup(groupId);
+    public List<UserGroupMappingDto> loadMembers(@RequestParam Integer groupId) {
+        return userGroupService.loadMembers(groupId);
     }
 }

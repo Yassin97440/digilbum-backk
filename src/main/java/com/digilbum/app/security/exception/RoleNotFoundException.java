@@ -1,8 +1,8 @@
-package com.digilbum.app.security;
+package com.digilbum.app.security.exception;
 
 import java.io.Serial;
 
-public class RoleNotFoundException extends RuntimeException{
+public class RoleNotFoundException extends RuntimeException {
 
     @Serial
     private static final long serialVersionUID = -703489719077665739L;
@@ -19,9 +19,9 @@ public class RoleNotFoundException extends RuntimeException{
         super(cause);
     }
 
-    protected RoleNotFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected RoleNotFoundException(String message, Throwable cause, boolean enableSuppression,
+            boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
-
 
 }
