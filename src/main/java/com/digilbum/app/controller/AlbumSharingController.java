@@ -18,7 +18,7 @@ public class AlbumSharingController {
     @GetMapping("/share")
     public ResponseEntity<Void> shareAlbum(
             @RequestParam Integer albumId,
-            @RequestParam Integer ...groupIds) {
+            @RequestParam Integer... groupIds) {
         albumSharingService.shareAlbumWithGroup(albumId, groupIds);
         return ResponseEntity.ok().build();
     }
@@ -33,6 +33,6 @@ public class AlbumSharingController {
 
     @GetMapping("/groups")
     public ResponseEntity<List<GroupDto>> getGroupsForAlbumShared(@RequestParam Integer albumId) {
-        return ResponseEntity.ok(albumSharingService.getGroupsForAlbumShared(albumId));
+        return ResponseEntity.ok(albumSharingService.loadGroupsForSharedAlbum(albumId));
     }
 }

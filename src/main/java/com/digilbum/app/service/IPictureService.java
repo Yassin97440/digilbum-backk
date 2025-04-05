@@ -10,9 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface IPictureService {
 
-    List<PictureDto> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException;
+    List<PictureDto> writeAndSave(List<MultipartFile> pictures, Integer albumId) throws IOException;
 
-    List<PictureDto> loadPicturesForAlbum(Integer albumId);
+    List<PictureDto> loadForAlbum(Integer albumId);
 
     void deletePictures(Album album);
 }

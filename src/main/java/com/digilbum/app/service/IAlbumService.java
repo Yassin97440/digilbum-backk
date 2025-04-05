@@ -15,13 +15,13 @@ public interface IAlbumService {
 
     void update(AlbumDto albumDto);
 
-    void deleteAlbum(Integer albumId);
+    void delete(Integer albumId);
 
     List<AlbumDto> loadSharedAlbumsForUser();
 
     AlbumDto getDtoById(Integer id);
 
-    List<AlbumDto> loadAlbumsForEvent(Integer eventId);
+    List<AlbumDto> loadForEvent(Integer eventId);
 
     Album getAtomicAlbum(PictureServiceImpl pictureServiceImpl, Integer albumId);
 

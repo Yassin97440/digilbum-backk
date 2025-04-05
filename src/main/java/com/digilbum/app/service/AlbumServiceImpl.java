@@ -84,7 +84,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public void deleteAlbum(Integer albumId) {
+    public void delete(Integer albumId) {
 
         Album album = albumRepository.findById(albumId).get();
         pictureService.deletePictures(album);
@@ -110,7 +110,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<AlbumDto> loadAlbumsForEvent(Integer eventId) {
+    public List<AlbumDto> loadForEvent(Integer eventId) {
         Optional<List<Album>> album = albumRepository.findALlByEvent_Id(eventId);
         if (!album.isPresent()) {
             throw new EntityNotFoundException();

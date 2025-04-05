@@ -53,13 +53,13 @@ public class PictureServiceImpl implements IPictureService {
     }
 
     @Override
-    public List<PictureDto> loadPicturesForAlbum(Integer albumId) {
-        return addWebPathForPicturesDto(
+    public List<PictureDto> loadForAlbum(Integer albumId) {
+        return addWebPathForDto(
                 pictureRepository.findByAlbumId(albumId));
     }
 
     @Override
-    public List<PictureDto> writeAndSavePictures(List<MultipartFile> pictures, Integer albumId) throws IOException {
+    public List<PictureDto> writeAndSave(List<MultipartFile> pictures, Integer albumId) throws IOException {
         Album album = albumService.getAtomicAlbum(this, albumId);
         List<Picture> newPictures = new ArrayList<>();
 
@@ -105,7 +105,7 @@ public class PictureServiceImpl implements IPictureService {
         return pictureType[1];
     }
 
-    private List<PictureDto> addWebPathForPicturesDto(List<Picture> pictures) {
+    private List<PictureDto> addWebPathForDto(List<Picture> pictures) {
         final List<PictureDto> finalDto = new ArrayList<>();
         for (Picture picture : pictures) {
             finalDto.add(new PictureDto(
