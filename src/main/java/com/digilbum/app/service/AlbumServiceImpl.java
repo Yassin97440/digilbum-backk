@@ -3,6 +3,7 @@ package com.digilbum.app.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.digilbum.app.dto.AlbumDto;
 import com.digilbum.app.models.AlbumGroupMapping;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Lazy;
 
 import com.digilbum.app.models.Album;
 import com.digilbum.app.repositorys.AlbumRepository;
@@ -28,10 +30,11 @@ public class AlbumServiceImpl implements IAlbumService {
     private final EventService eventService;
 
     public AlbumServiceImpl(AlbumRepository albumRepository,
-            IPictureService pictureService,
+            @Lazy IPictureService pictureService,
             @Value("${pictures.server.url}") String picturesHost,
             @Value("${pictures.folder.path}") String picturesFolders,
             AlbumSharingService albumSharingService, EventService eventService) {
+
         this.albumRepository = albumRepository;
         this.pictureService = pictureService;
         this.picturesHost = picturesHost;
@@ -49,6 +52,12 @@ public class AlbumServiceImpl implements IAlbumService {
                     toDto(album));
         }
         return returnList;
+    }
+
+    public Album getAtomicAlbum(PictureServiceImpl pictureServiceImpl, Integer albumId) {
+        AtomicReference<Album> album = new AtomicReference<>();
+        pictureServiceImpl.albumRepository.findById(albumId).ifPresent(album::set);
+        return album.get();
     }
 
     @Override
@@ -75,7 +84,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public void deleteAlbum(Integer albumId) {
+    public void delete(Integer albumId) {
 
         Album album = albumRepository.findById(albumId).get();
         pictureService.deletePictures(album);
@@ -101,7 +110,7 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
-    public List<AlbumDto> loadAlbumsForEvent(Integer eventId) {
+    public List<AlbumDto> loadForEvent(Integer eventId) {
         Optional<List<Album>> album = albumRepository.findALlByEvent_Id(eventId);
         if (!album.isPresent()) {
             throw new EntityNotFoundException();

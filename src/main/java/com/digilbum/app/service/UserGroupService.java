@@ -33,18 +33,16 @@ public class UserGroupService {
         return userGroupMappingRepository.save(createAssociation(user, group, false));
     }
 
-
     private UserGroupMapping createAssociation(User user, Group gr, boolean admin) {
 
         return new UserGroupMapping(
                 new UserGroupMappingId(user, gr),
                 admin,
-                Instant.now()
-        );
+                Instant.now());
 
     }
 
-    public List<UserGroupMappingDto> loadUsersForGroup(Integer groupId) {
+    public List<UserGroupMappingDto> loadMembers(Integer groupId) {
         List<UserGroupMapping> associations = userGroupMappingRepository.findById_Group_Id(groupId);
         return associations.stream()
                 .map(this::toDto)
@@ -54,17 +52,14 @@ public class UserGroupService {
     UserGroupMappingDto toDto(UserGroupMapping toParse) {
         return new UserGroupMappingDto(
                 userService.toDto(
-                        toParse.getId().getUser()
-                ),
+                        toParse.getId().getUser()),
                 new GroupDto(
                         toParse.getId().getGroup().getId(),
                         toParse.getId().getGroup().getType(),
                         toParse.getId().getGroup().getName(),
                         toParse.getId().getGroup().getCreatedAt(),
-                        toParse.getId().getGroup().getJoinCode()
-                ),
+                        toParse.getId().getGroup().getJoinCode()),
                 toParse.getAdmin(),
-                toParse.getJoinedAt()
-        );
+                toParse.getJoinedAt());
     }
 }

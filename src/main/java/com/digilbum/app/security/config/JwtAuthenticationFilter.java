@@ -29,13 +29,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       @NonNull HttpServletRequest request,
       @NonNull HttpServletResponse response,
-      @NonNull FilterChain filterChain
-  ) throws ServletException, IOException {
+      @NonNull FilterChain filterChain) throws ServletException, IOException {
     addCorsHeaders(response);
     final String authHeader = request.getHeader("Authorization");
     final String jwt;
     final String userEmail;
-    if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+    if (haveValidAuthHeader(authHeader)) {
       filterChain.doFilter(request, response);
       return;
     }
@@ -44,29 +43,37 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
       var isTokenValid = tokenRepository.findByToken(jwt)
-          .map(t -> !t.isExpired() && !t.isRevoked())
+          .map(token -> !token.isExpired() && !token.isRevoked())
           .orElse(false);
       if (jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-            userDetails,
-            null,
-            userDetails.getAuthorities()
-        );
-        authToken.setDetails(
-            new WebAuthenticationDetailsSource().buildDetails(request)
-        );
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+        authenticateUserInSpringContext(request, userDetails);
       }
     }
     filterChain.doFilter(request, response);
   }
 
-  private void addCorsHeaders(HttpServletResponse response){
+  public void authenticateUserInSpringContext(HttpServletRequest request, UserDetails userDetails) {
+    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+        userDetails,
+        null,
+        userDetails.getAuthorities());
+
+    authToken.setDetails(
+        new WebAuthenticationDetailsSource().buildDetails(request));
+
+    SecurityContextHolder.getContext().setAuthentication(authToken);
+  }
+
+  private boolean haveValidAuthHeader(final String authHeader) {
+    return authHeader == null || !authHeader.startsWith("Bearer ");
+  }
+
+  private void addCorsHeaders(HttpServletResponse response) {
     response.setHeader("Access-Control-Allow-Origin", "https://digilbum.abdulla.fr");
     response.setHeader("Access-Control-Allow-Credentials", "true");
     response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
-    response.setHeader("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With, multipart/form-data");
-
+    response.setHeader("Access-Control-Allow-Headers",
+        "Content-Type,Content-Length, Authorization, Accept,X-Requested-With, multipart/form-data");
 
   }
 }

@@ -22,7 +22,7 @@ public class AlbumController {
     }
 
     @GetMapping("/{id}")
-    public AlbumDto getAlbumById(@PathVariable Integer id){
+    public AlbumDto getById(@PathVariable Integer id) {
         return albumService.getDtoById(id);
     }
 
@@ -35,7 +35,7 @@ public class AlbumController {
     @PostMapping("/deleteOne")
     public void delete(@RequestParam Integer albumId) {
         logger.info("delete album");
-        albumService.deleteAlbum(albumId);
+        albumService.delete(albumId);
     }
 
     @PutMapping("/")
@@ -43,8 +43,7 @@ public class AlbumController {
         try {
             albumService.update(album);
             return ResponseEntity.ok().build();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.severe("Error updating album  : " + e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
@@ -59,25 +58,20 @@ public class AlbumController {
     List<AlbumDto> loadSharedAlbumsForUser() {
         try {
             return albumService.loadSharedAlbumsForUser();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             logger.severe("Error loading shared albums for user  : " + e.getMessage());
             throw e;
         }
     }
 
-
     @GetMapping("/forEvent/{eventId}")
-    List<AlbumDto> loadAlbumsForEvent(@PathVariable Integer eventId) {
+    List<AlbumDto> loadForEvent(@PathVariable Integer eventId) {
         try {
-            return albumService.loadAlbumsForEvent(eventId);
-        }
-        catch (Exception e){
+            return albumService.loadForEvent(eventId);
+        } catch (Exception e) {
             logger.severe("Error loading albums for event : " + e.getMessage());
             throw e;
         }
     }
-
-
 
 }

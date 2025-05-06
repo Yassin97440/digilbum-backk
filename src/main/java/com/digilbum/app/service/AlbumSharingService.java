@@ -56,20 +56,21 @@ public class AlbumSharingService {
         albumGroupMappingRepository.deleteById(mappingId);
     }
 
-    List<AlbumGroupMapping> findAlbumsByUserGroups(Integer userId){
+    List<AlbumGroupMapping> findAlbumsByUserGroups(Integer userId) {
         return albumGroupMappingRepository.findAlbumsByUserGroups(userId);
     }
 
-    public List<GroupDto> getGroupsForAlbumShared(Integer albumId){
-        Optional<List<AlbumGroupMapping>> albumGroupMappings = albumGroupMappingRepository.findAllById_Album_Id(albumId);
-        if(!albumGroupMappings.isPresent()){
+    public List<GroupDto> loadGroupsForSharedAlbum(Integer albumId) {
+        Optional<List<AlbumGroupMapping>> albumGroupMappings = albumGroupMappingRepository
+                .findAllById_Album_Id(albumId);
+        if (!albumGroupMappings.isPresent()) {
             throw new EntityNotFoundException("AlbumGroupMapping");
         }
         List<Group> groups = new ArrayList<>();
-        for(AlbumGroupMapping mapping : albumGroupMappings.get()){
+        for (AlbumGroupMapping mapping : albumGroupMappings.get()) {
             groups.add(mapping.getId().getGroup());
         }
         return groups.stream()
-               .map(groupService::toDto).toList();
+                .map(groupService::toDto).toList();
     }
 }
