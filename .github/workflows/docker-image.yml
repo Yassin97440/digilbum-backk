@@ -39,6 +39,7 @@ jobs:
             docker run -d \
               -p 8080:8080 \
               --name digilbum-back \
+              --network digilbum \
               -v ~/pictures:/home/digilbum/pictures \
               -e SPRING_PROFILES_ACTIVE=prod \
               -e DATABASE_HOST=207.154.214.80 \
